@@ -1,7 +1,7 @@
 package com.rokannon.core.command
 {
     import com.rokannon.core.Broadcaster;
-    import com.rokannon.core.action.enum.CommandState;
+    import com.rokannon.core.command.enum.CommandState;
     import com.rokannon.core.errors.AbstractMethodError;
 
     public class CommandBase

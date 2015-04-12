@@ -44,7 +44,12 @@ package com.rokannon.core
             for (i = 0; i < length; ++i)
                 _queue[i] = _callbacks[i];
             for (i = 0; i < length; ++i)
-                _queue[i](_target);
+            {
+                if (_queue[i].length == 0)
+                    _queue[i]();
+                else
+                    _queue[i](_target);
+            }
             _queue.length = 0;
         }
     }

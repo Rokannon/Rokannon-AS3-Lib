@@ -5,12 +5,8 @@ package com.rokannon.math.utils
         if (n == 0)
             return 1;
         n = getAbs(n);
-        var num:int = 0;
-        while (n != 0)
-        {
-            num++;
+        for (var i:int = 0; n != 0; ++i)
             n = int(n / 10);
-        }
-        return num;
+        return i;
     }
 }
