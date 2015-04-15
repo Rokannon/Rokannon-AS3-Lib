@@ -6,9 +6,9 @@ package com.rokannon.core.utils
     public function callOutStack(method:Function, delayMs:Number = 0, ...args):void
     {
         var interval:uint = setInterval(function ():void
-                                        {
-                                            clearInterval(interval);
-                                            method.apply(null, args);
-                                        }, delayMs);
+        {
+            clearInterval(interval);
+            method.apply(null, args);
+        }, delayMs);
     }
 }

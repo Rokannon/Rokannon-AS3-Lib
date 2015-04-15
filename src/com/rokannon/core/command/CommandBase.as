@@ -31,7 +31,7 @@ package com.rokannon.core.command
 
         protected function onStart():void
         {
-            throw(new AbstractMethodError());
+            throw new AbstractMethodError();
         }
 
         protected final function onComplete():void
