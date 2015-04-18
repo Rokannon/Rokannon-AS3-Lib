@@ -13,7 +13,7 @@ package com.rokannon.core.command
         private var _isExecuting:Boolean = false;
         private var _executeNextPending:Boolean = false;
         private var _insertPointer:int = 0;
-        private var _lastCommandResult:String = CommandState.INITIAL;
+        private var _lastCommandResult:String = CommandState.COMPLETE;
 
         public function CommandExecutor()
         {
@@ -46,6 +46,9 @@ package com.rokannon.core.command
         {
             _commandsQueue.length = 0;
             _insertPointer = 0;
+            _executeNextPending = false;
+            if (!_isExecuting)
+                _lastCommandResult = CommandState.COMPLETE;
         }
 
         private function executeNext():void
@@ -81,6 +84,10 @@ package com.rokannon.core.command
 
         private function doExecuteNext():void
         {
+            // This guard clause means that all commands were removed.
+            if (!_executeNextPending)
+                return;
+
             _executeNextPending = false;
             var command:CommandBase = _commandsQueue.shift();
             command.eventComplete.add(onCommandFinished);
