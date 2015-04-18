@@ -9,7 +9,8 @@ package com.rokannon.core.command
         public const eventExecuteStart:Broadcaster = new Broadcaster(this);
         public const eventExecuteEnd:Broadcaster = new Broadcaster(this);
 
-        private const _commandsQueue:Vector.<CommandBase> = new <CommandBase>[];
+        private const _queueItemPool:Vector.<QueueItem> = new <QueueItem>[];
+        private const _commandsQueue:Vector.<QueueItem> = new <QueueItem>[];
         private var _isExecuting:Boolean = false;
         private var _executeNextPending:Boolean = false;
         private var _insertPointer:int = 0;
@@ -19,17 +20,20 @@ package com.rokannon.core.command
         {
         }
 
-        public function pushCommand(command:CommandBase):void
+        public function pushCommand(command:CommandBase, lastCommandResult:String = null):void
         {
-            insertCommandAt(command, _insertPointer);
+            var queueItem:QueueItem = createQueueItem();
+            queueItem.command = command;
+            queueItem.lastCommandResult = lastCommandResult;
+            insertCommandAt(queueItem, _insertPointer);
             ++_insertPointer;
             if (!_isExecuting)
                 executeNext();
         }
 
-        public function pushMethod(method:Function):void
+        public function pushMethod(method:Function, lastCommandResult:String = null):void
         {
-            pushCommand(new MethodCommand(method));
+            pushCommand(new MethodCommand(method), lastCommandResult);
         }
 
         public function get isExecuting():Boolean
@@ -44,6 +48,8 @@ package com.rokannon.core.command
 
         public function removeAllCommands():void
         {
+            for (var i:int = _commandsQueue.length - 1; i >= 0; --i)
+                releaseQueueItem(_commandsQueue[i]);
             _commandsQueue.length = 0;
             _insertPointer = 0;
             _executeNextPending = false;
@@ -74,12 +80,12 @@ package com.rokannon.core.command
             }
         }
 
-        private function insertCommandAt(command:CommandBase, index:int):void
+        private function insertCommandAt(queueItem:QueueItem, index:int):void
         {
             _commandsQueue.push(null);
             for (var i:int = _commandsQueue.length - 1; i > index; --i)
                 _commandsQueue[i] = _commandsQueue[i - 1];
-            _commandsQueue[index] = command;
+            _commandsQueue[index] = queueItem;
         }
 
         private function doExecuteNext():void
@@ -89,16 +95,41 @@ package com.rokannon.core.command
                 return;
 
             _executeNextPending = false;
-            var command:CommandBase = _commandsQueue.shift();
-            command.eventComplete.add(onCommandFinished);
-            command.eventFailed.add(onCommandFinished);
-            if (!_isExecuting)
-            {
-                _isExecuting = true;
-                eventExecuteStart.broadcast();
-            }
             _insertPointer = 0;
-            command.execute();
+            var queueItem:QueueItem = _commandsQueue.shift();
+            if (queueItem.lastCommandResult == null || queueItem.lastCommandResult == _lastCommandResult)
+            {
+                var command:CommandBase = queueItem.command;
+                command.eventComplete.add(onCommandFinished);
+                command.eventFailed.add(onCommandFinished);
+                if (!_isExecuting)
+                {
+                    _isExecuting = true;
+                    eventExecuteStart.broadcast();
+                }
+
+                command.execute();
+            }
+            else if (_commandsQueue.length > 0)
+                executeNext();
+            else if (_isExecuting)
+            {
+                _isExecuting = false;
+                eventExecuteEnd.broadcast();
+            }
+            releaseQueueItem(queueItem);
+        }
+
+        private function createQueueItem():QueueItem
+        {
+            return _queueItemPool.pop() || new QueueItem();
+        }
+
+        private function releaseQueueItem(queueItem:QueueItem):void
+        {
+            queueItem.command = null;
+            queueItem.lastCommandResult = null;
+            _queueItemPool.push(queueItem)
         }
     }
 }
