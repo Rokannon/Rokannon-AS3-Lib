@@ -1,6 +1,7 @@
 package com.rokannon.core.command
 {
     import com.rokannon.core.Broadcaster;
+    import com.rokannon.core.command.enum.CommandState;
     import com.rokannon.core.utils.callOutStack;
 
     public class CommandExecutor
@@ -12,6 +13,7 @@ package com.rokannon.core.command
         private var _isExecuting:Boolean = false;
         private var _executeNextPending:Boolean = false;
         private var _insertPointer:int = 0;
+        private var _lastCommandResult:String = CommandState.INITIAL;
 
         public function CommandExecutor()
         {
@@ -35,6 +37,16 @@ package com.rokannon.core.command
             return _isExecuting;
         }
 
+        public function get lastCommandResult():String
+        {
+            return _lastCommandResult;
+        }
+
+        public function removeAllCommands():void
+        {
+            _commandsQueue.length = 0;
+        }
+
         private function executeNext():void
         {
             if (!_executeNextPending)
@@ -48,6 +60,7 @@ package com.rokannon.core.command
         {
             command.eventComplete.remove(onCommandFinished);
             command.eventFailed.remove(onCommandFinished);
+            _lastCommandResult = command.state;
             if (_commandsQueue.length > 0)
                 executeNext();
             else
