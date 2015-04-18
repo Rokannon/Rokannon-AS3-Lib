@@ -9,7 +9,7 @@ package com.rokannon.core.command
         public const eventComplete:Broadcaster = new Broadcaster(this);
         public const eventFailed:Broadcaster = new Broadcaster(this);
 
-        protected var _state:String = CommandState.INITIAL;
+        private var _state:String = CommandState.INITIAL;
 
         public function CommandBase()
         {
