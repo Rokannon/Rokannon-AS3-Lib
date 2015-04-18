@@ -45,6 +45,7 @@ package com.rokannon.core.command
         public function removeAllCommands():void
         {
             _commandsQueue.length = 0;
+            _insertPointer = 0;
         }
 
         private function executeNext():void
