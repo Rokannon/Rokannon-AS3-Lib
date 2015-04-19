@@ -31,9 +31,9 @@ package com.rokannon.core.command
                 executeNext();
         }
 
-        public function pushMethod(method:Function, lastCommandResult:String = null):void
+        public function pushMethod(method:Function, lastCommandResult:String = null, params:Object = null):void
         {
-            pushCommand(new MethodCommand(method), lastCommandResult);
+            pushCommand(new MethodCommand(method, params), lastCommandResult);
         }
 
         public function get isExecuting():Boolean
