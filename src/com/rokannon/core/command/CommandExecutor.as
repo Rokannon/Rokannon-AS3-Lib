@@ -14,26 +14,26 @@ package com.rokannon.core.command
         private var _isExecuting:Boolean = false;
         private var _executeNextPending:Boolean = false;
         private var _insertPointer:int = 0;
-        private var _lastCommandResult:String = CommandState.COMPLETE;
+        private var _lastCommandResult:Boolean = true;
 
         public function CommandExecutor()
         {
         }
 
-        public function pushCommand(command:CommandBase, lastCommandResult:String = null):void
+        public function pushCommand(command:CommandBase, prevCommandResult:Boolean = true):void
         {
             var queueItem:QueueItem = createQueueItem();
             queueItem.command = command;
-            queueItem.lastCommandResult = lastCommandResult;
+            queueItem.prevCommandResult = prevCommandResult;
             insertCommandAt(queueItem, _insertPointer);
             ++_insertPointer;
             if (!_isExecuting)
                 executeNext();
         }
 
-        public function pushMethod(method:Function, lastCommandResult:String = null, params:Object = null):void
+        public function pushMethod(method:Function, prevCommandResult:Boolean = true, params:Object = null):void
         {
-            pushCommand(new MethodCommand(method, params), lastCommandResult);
+            pushCommand(new MethodCommand(method, params), prevCommandResult);
         }
 
         public function get isExecuting():Boolean
@@ -41,7 +41,7 @@ package com.rokannon.core.command
             return _isExecuting;
         }
 
-        public function get lastCommandResult():String
+        public function get lastCommandResult():Boolean
         {
             return _lastCommandResult;
         }
@@ -54,7 +54,7 @@ package com.rokannon.core.command
             _insertPointer = 0;
             _executeNextPending = false;
             if (!_isExecuting)
-                _lastCommandResult = CommandState.COMPLETE;
+                _lastCommandResult = true;
         }
 
         private function executeNext():void
@@ -70,7 +70,7 @@ package com.rokannon.core.command
         {
             command.eventComplete.remove(onCommandFinished);
             command.eventFailed.remove(onCommandFinished);
-            _lastCommandResult = command.state;
+            _lastCommandResult = command.state == CommandState.COMPLETE;
             if (_commandsQueue.length > 0)
                 executeNext();
             else
@@ -97,7 +97,7 @@ package com.rokannon.core.command
             _executeNextPending = false;
             _insertPointer = 0;
             var queueItem:QueueItem = _commandsQueue.shift();
-            if (queueItem.lastCommandResult == null || queueItem.lastCommandResult == _lastCommandResult)
+            if (queueItem.prevCommandResult == _lastCommandResult)
             {
                 var command:CommandBase = queueItem.command;
                 command.eventComplete.add(onCommandFinished);
@@ -128,7 +128,6 @@ package com.rokannon.core.command
         private function releaseQueueItem(queueItem:QueueItem):void
         {
             queueItem.command = null;
-            queueItem.lastCommandResult = null;
             _queueItemPool.push(queueItem)
         }
     }
