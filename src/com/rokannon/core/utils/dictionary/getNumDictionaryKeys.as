@@ -1,4 +1,4 @@
-package com.rokannon.core.utils
+package com.rokannon.core.utils.dictionary
 {
     import flash.utils.Dictionary;
 

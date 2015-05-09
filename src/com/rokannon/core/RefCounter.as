@@ -1,17 +1,17 @@
 package com.rokannon.core
 {
     import com.rokannon.core.errors.SingletonClassError;
-    import com.rokannon.core.utils.getNumDictionaryKeys;
+    import com.rokannon.core.utils.dictionary.getNumDictionaryKeys;
 
     import flash.utils.Dictionary;
 
-    public class ReferenceManager
+    public class RefCounter
     {
-        public static const instance:ReferenceManager = new ReferenceManager();
+        public static const instance:RefCounter = new RefCounter();
 
         private const _refsByType:Dictionary = new Dictionary();
 
-        public function ReferenceManager()
+        public function RefCounter()
         {
             if (instance != null)
                 throw new SingletonClassError();
