@@ -61,7 +61,10 @@ package com.rokannon.logging
         private function log(logLevel:uint, message:String, rest:Array):void
         {
             if (rest.length != 0)
-                message = stringFormat(message, rest);
+            {
+                rest.unshift(message);
+                message = stringFormat.apply(null, rest);
+            }
             var length:int = _callbacks.length;
             for (var i:int = 0; i < length; ++i)
                 _callbacks[i](this, logLevel, message);

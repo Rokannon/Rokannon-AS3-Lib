@@ -10,11 +10,17 @@ package com.rokannon.core
         public static const instance:RefCounter = new RefCounter();
 
         private const _refsByType:Dictionary = new Dictionary();
+        private const _refTypes:Vector.<String> = new <String>[];
 
         public function RefCounter()
         {
             if (instance != null)
                 throw new SingletonClassError();
+        }
+
+        public function get refTypes():Vector.<String>
+        {
+            return _refTypes;
         }
 
         public function addRef(ref:*, refType:String):void
@@ -30,7 +36,10 @@ package com.rokannon.core
         private function getRefsByType(refType:String):Dictionary
         {
             if (_refsByType[refType] == null)
+            {
                 _refsByType[refType] = new Dictionary(true);
+                _refTypes.push(refType);
+            }
             return _refsByType[refType];
         }
     }

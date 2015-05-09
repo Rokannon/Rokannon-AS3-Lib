@@ -13,9 +13,9 @@ package com.rokannon.math.geom
     public class Polyline implements IGeometricObject, IRenderable
     {
         private static const logger:Logger = Log.instance.getLogger(Polyline);
-        private static const HELPER_POINT_1:Point = new Point();
-        private static const HELPER_POINT_2:Point = new Point();
-        private static const HELPER_SEGMENT:Segment = new Segment();
+        private static const helperPoint1:Point = new Point();
+        private static const helperPoint2:Point = new Point();
+        private static const helperSegment:Segment = new Segment();
 
         private const _vertices:Vector.<Number> = new <Number>[];
         private var _numVertices:int;
@@ -68,11 +68,11 @@ package com.rokannon.math.geom
         {
             if (resultSegment == null)
                 resultSegment = new Segment();
-            getVertex(index, HELPER_POINT_1);
-            var x1:Number = HELPER_POINT_1.x;
-            var y1:Number = HELPER_POINT_1.y;
-            getVertex(index + 1, HELPER_POINT_1);
-            resultSegment.setTo(x1, y1, HELPER_POINT_1.x, HELPER_POINT_1.y);
+            getVertex(index, helperPoint1);
+            var x1:Number = helperPoint1.x;
+            var y1:Number = helperPoint1.y;
+            getVertex(index + 1, helperPoint1);
+            resultSegment.setTo(x1, y1, helperPoint1.x, helperPoint1.y);
             return resultSegment;
         }
 
@@ -81,22 +81,22 @@ package com.rokannon.math.geom
             d = getMax(d, 0);
             if (resultPoint == null)
                 resultPoint = new Point();
-            HELPER_POINT_2.setTo(x, y);
+            helperPoint2.setTo(x, y);
             var distance:Number = Infinity;
             var sideIndex:int;
             for (var i:int = 0; i < _numVertices - 1; ++i)
             {
-                getSide(i, HELPER_SEGMENT).closestPointToXY(x, y, HELPER_POINT_1);
-                var _distance:Number = getPointDistance(HELPER_POINT_1, HELPER_POINT_2);
+                getSide(i, helperSegment).closestPointToXY(x, y, helperPoint1);
+                var _distance:Number = getPointDistance(helperPoint1, helperPoint2);
                 if (_distance < distance)
                 {
-                    resultPoint.copyFrom(HELPER_POINT_1);
+                    resultPoint.copyFrom(helperPoint1);
                     distance = _distance;
                     sideIndex = i;
                 }
             }
-            getSide(sideIndex, HELPER_SEGMENT).getPoint1(HELPER_POINT_1);
-            d += getPointDistance(HELPER_POINT_1, resultPoint);
+            getSide(sideIndex, helperSegment).getPoint1(helperPoint1);
+            d += getPointDistance(helperPoint1, resultPoint);
             while (true)
             {
                 if (sideIndex == _numVertices - 1)
@@ -106,8 +106,8 @@ package com.rokannon.math.geom
                 }
                 else
                 {
-                    getSide(sideIndex, HELPER_SEGMENT);
-                    var _d:Number = HELPER_SEGMENT.getLength();
+                    getSide(sideIndex, helperSegment);
+                    var _d:Number = helperSegment.getLength();
                     if (d > _d)
                     {
                         d -= _d;
@@ -115,7 +115,7 @@ package com.rokannon.math.geom
                     }
                     else
                     {
-                        HELPER_SEGMENT.lerp(d / _d, resultPoint);
+                        helperSegment.lerp(d / _d, resultPoint);
                         break;
                     }
                 }
@@ -134,9 +134,9 @@ package com.rokannon.math.geom
 
             for (var i:int = 0; i < _numVertices - 1; ++i)
             {
-                getVertex(i, HELPER_POINT_1);
-                getVertex(i + 1, HELPER_POINT_2);
-                renderTarget.drawLine(HELPER_POINT_1.x, HELPER_POINT_1.y, HELPER_POINT_2.x, HELPER_POINT_2.y, color);
+                getVertex(i, helperPoint1);
+                getVertex(i + 1, helperPoint2);
+                renderTarget.drawLine(helperPoint1.x, helperPoint1.y, helperPoint2.x, helperPoint2.y, color);
             }
         }
 
@@ -152,15 +152,15 @@ package com.rokannon.math.geom
         {
             if (resultPoint == null)
                 resultPoint = new Point();
-            HELPER_POINT_2.setTo(x, y);
+            helperPoint2.setTo(x, y);
             var distance:Number = Infinity;
             for (var i:int = 0; i < _numVertices - 1; ++i)
             {
-                getSide(i, HELPER_SEGMENT).closestPointToXY(x, y, HELPER_POINT_1);
-                var _distance:Number = getPointDistance(HELPER_POINT_1, HELPER_POINT_2);
+                getSide(i, helperSegment).closestPointToXY(x, y, helperPoint1);
+                var _distance:Number = getPointDistance(helperPoint1, helperPoint2);
                 if (_distance < distance)
                 {
-                    resultPoint.copyFrom(HELPER_POINT_1);
+                    resultPoint.copyFrom(helperPoint1);
                     distance = _distance;
                 }
             }
