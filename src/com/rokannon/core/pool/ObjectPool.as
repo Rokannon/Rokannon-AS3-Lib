@@ -51,7 +51,7 @@ package com.rokannon.core.pool
                 if (objectClass == null)
                     logger.fatal("No object class found during attempt to release pool object.");
             }
-            getObjectsByClass(objectClass).push(objectClass);
+            getObjectsByClass(objectClass).push(object);
         }
 
         private function getObjectsByClass(objectClass:Class):Vector.<IPoolObject>
