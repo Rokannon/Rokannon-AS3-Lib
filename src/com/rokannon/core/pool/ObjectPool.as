@@ -27,7 +27,7 @@ package com.rokannon.core.pool
         {
             CONFIG::log_fatal
             {
-                if (!classUtilsCache.extendsClass(objectClass, IPoolObject))
+                if (!classUtilsCache.implementsInterface(objectClass, IPoolObject))
                     logger.fatal("Attempt to create pool object using invalid object class.");
             }
             var objects:Vector.<IPoolObject> = getObjectsByClass(objectClass);

@@ -8,9 +8,9 @@ package com.rokannon.core
     import com.rokannon.core.utils.classUtils.getClassConstants;
     import com.rokannon.core.utils.classUtils.getClassProperties;
     import com.rokannon.core.utils.classUtils.getPropertyClassDefinition;
+    import com.rokannon.core.utils.classUtils.implementsInterface;
 
     import flash.utils.Dictionary;
-    import flash.utils.getDefinitionByName;
 
     public class ClassUtilsCache
     {
@@ -23,6 +23,7 @@ package com.rokannon.core
         private const _classDefinitionByClassAndName:TwoKeysDictionary = new TwoKeysDictionary();
         private const _extendsClassByClasses:TwoKeysDictionary = new TwoKeysDictionary();
         private const _constantsByClassAndType:TwoKeysDictionary = new TwoKeysDictionary();
+        private const _implementsInterfaceByClassAndInterface:TwoKeysDictionary = new TwoKeysDictionary();
 
         public function ClassUtilsCache()
         {
@@ -89,6 +90,14 @@ package com.rokannon.core
                 _constantsByClassAndType.setValue(classDefinition, type,
                     com.rokannon.core.utils.classUtils.getClassConstants(classDefinition, type, this));
             return _constantsByClassAndType.getValue(classDefinition, type);
+        }
+
+        public function implementsInterface(classDefinition:Class, interfaceDefinition:Class):Boolean
+        {
+            if (!_implementsInterfaceByClassAndInterface.hasValue(classDefinition, interfaceDefinition))
+                _implementsInterfaceByClassAndInterface.setValue(classDefinition, interfaceDefinition,
+                    com.rokannon.core.utils.classUtils.implementsInterface(classDefinition, interfaceDefinition, this));
+            return _implementsInterfaceByClassAndInterface.getValue(classDefinition, interfaceDefinition);
         }
     }
 }
