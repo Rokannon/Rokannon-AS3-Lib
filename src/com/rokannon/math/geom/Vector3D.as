@@ -81,7 +81,7 @@ package com.rokannon.math.geom
             return u1 * v2 - u2 * v1;
         }
 
-        public function releasePoolObject():void
+        public function resetPoolObject():void
         {
             _x = 0;
             _y = 0;

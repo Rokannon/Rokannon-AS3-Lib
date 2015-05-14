@@ -24,7 +24,7 @@ package com.rokannon.math.graph
             this.y = y;
         }
 
-        public function releasePoolObject():void
+        public function resetPoolObject():void
         {
             x = 0;
             y = 0;

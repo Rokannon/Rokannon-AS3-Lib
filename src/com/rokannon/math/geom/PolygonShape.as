@@ -358,7 +358,7 @@ package com.rokannon.math.geom
             return 0.5 * getAbs((x2 - x0) * (y1 - y0) - (y2 - y0) * (x1 - x0));
         }
 
-        public function releasePoolObject():void
+        public function resetPoolObject():void
         {
             vertices.length = 0;
             _numVertices = 0;

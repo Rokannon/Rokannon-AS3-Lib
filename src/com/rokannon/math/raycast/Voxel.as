@@ -12,7 +12,7 @@ package com.rokannon.math.raycast
         {
         }
 
-        public function releasePoolObject():void
+        public function resetPoolObject():void
         {
             gridObjects.length = 0;
             index = 0;

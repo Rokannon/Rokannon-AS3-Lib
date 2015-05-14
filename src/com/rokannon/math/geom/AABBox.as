@@ -376,7 +376,7 @@ package com.rokannon.math.geom
             helperVertices.length = 0;
         }
 
-        public function releasePoolObject():void
+        public function resetPoolObject():void
         {
             _xMin = 0;
             _yMin = 0;

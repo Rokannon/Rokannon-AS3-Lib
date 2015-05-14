@@ -14,7 +14,7 @@ package com.rokannon.math.raycast
         {
         }
 
-        public function releasePoolObject():void
+        public function resetPoolObject():void
         {
             voxels.length = 0;
             lastActionID = 0;

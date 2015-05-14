@@ -200,7 +200,7 @@ package com.rokannon.math.geom
             return closestPointToXY(point.x, point.y, resultPoint);
         }
 
-        public function releasePoolObject():void
+        public function resetPoolObject():void
         {
             _x1 = 0;
             _y1 = 0;

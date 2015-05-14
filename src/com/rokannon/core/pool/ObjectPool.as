@@ -44,7 +44,7 @@ package com.rokannon.core.pool
 
         public function releaseObject(object:IPoolObject):void
         {
-            object.releasePoolObject();
+            object.resetPoolObject();
             var objectClass:Class = _classByObject[object];
             CONFIG::log_fatal
             {

@@ -173,7 +173,7 @@ package com.rokannon.math.geom
             return closestPointToXY(point.x, point.y, resultPoint);
         }
 
-        public function releasePoolObject():void
+        public function resetPoolObject():void
         {
             _vertices.length = 0;
             _numVertices = 0;
