@@ -1,5 +1,6 @@
 package com.rokannon.math.graph
 {
+    import com.rokannon.core.pool.ObjectPool;
     import com.rokannon.core.utils.getProperty;
     import com.rokannon.display.render.IRenderTarget;
     import com.rokannon.display.render.IRenderable;
@@ -7,7 +8,7 @@ package com.rokannon.math.graph
     public class Graph implements IRenderable
     {
         private static const helperNodes:Vector.<Node> = new Vector.<Node>();
-        private static const nodesPool:Vector.<Node> = new Vector.<Node>();
+        private static const objectPool:ObjectPool = ObjectPool.instance;
 
         public const nodes:Vector.<Node> = new Vector.<Node>();
 
@@ -17,8 +18,7 @@ package com.rokannon.math.graph
 
         public function createNode():Node
         {
-            var node:Node = createNode();
-            node.setTo(0, 0);
+            var node:Node = Node(objectPool.createObject(Node));
             nodes.push(node);
             return node;
         }
@@ -31,10 +31,7 @@ package com.rokannon.math.graph
             for each (adjacentNode in node.fromNodes)
                 adjacentNode.toNodes.splice(adjacentNode.toNodes.indexOf(node), 1);
             nodes.splice(nodes.indexOf(node), 1);
-            node.toNodes.length = 0;
-            node.fromNodes.length = 0;
-            node.reset();
-            releaseNode(node);
+            objectPool.releaseObject(node);
         }
 
         public function connect(fromNode:Node, toNode:Node):void
@@ -63,7 +60,11 @@ package com.rokannon.math.graph
         {
             var node:Node;
             for each (node in nodes)
-                node.reset();
+            {
+                node.path = null;
+                node.known = false;
+                node.distance = Infinity;
+            }
 
             startNode.distance = 0;
 
@@ -144,18 +145,6 @@ package com.rokannon.math.graph
                 for each (node in toNodes)
                     renderTarget.drawLine(x, y, node.x, node.y, color);
             }
-        }
-
-        [Inline]
-        private static function createNode():Node
-        {
-            return nodesPool.pop() || new Node();
-        }
-
-        [Inline]
-        private static function releaseNode(node:Node):void
-        {
-            nodesPool.push(node)
         }
     }
 }

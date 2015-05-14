@@ -1,5 +1,6 @@
 package com.rokannon.math.geom
 {
+    import com.rokannon.core.pool.IPoolObject;
     import com.rokannon.core.utils.getProperty;
     import com.rokannon.display.render.IRenderTarget;
     import com.rokannon.display.render.IRenderable;
@@ -8,7 +9,7 @@ package com.rokannon.math.geom
 
     import flash.geom.Point;
 
-    public class Vector2D implements IGeometricObject, IRenderable
+    public class Vector2D implements IGeometricObject, IRenderable, IPoolObject
     {
         private var _x:Number;
         private var _y:Number;
@@ -164,6 +165,12 @@ package com.rokannon.math.geom
         public function closestPointToP(point:Point, resultPoint:Point = null):Point
         {
             return closestPointToXY(point.x, point.y, resultPoint);
+        }
+
+        public function releasePoolObject():void
+        {
+            _x = 0;
+            _y = 0;
         }
     }
 }

@@ -1,5 +1,6 @@
 package com.rokannon.math.geom
 {
+    import com.rokannon.core.pool.IPoolObject;
     import com.rokannon.core.utils.getProperty;
     import com.rokannon.display.render.IRenderTarget;
     import com.rokannon.display.render.IRenderable;
@@ -7,7 +8,7 @@ package com.rokannon.math.geom
 
     import flash.geom.Point;
 
-    public class Segment implements IGeometricObject, IRenderable
+    public class Segment implements IGeometricObject, IRenderable, IPoolObject
     {
         private static const helperPoint:Point = new Point();
         private static const helperVector1:Vector2D = new Vector2D();
@@ -197,6 +198,14 @@ package com.rokannon.math.geom
         public function closestPointToP(point:Point, resultPoint:Point = null):Point
         {
             return closestPointToXY(point.x, point.y, resultPoint);
+        }
+
+        public function releasePoolObject():void
+        {
+            _x1 = 0;
+            _y1 = 0;
+            _x2 = 0;
+            _y2 = 0;
         }
     }
 }

@@ -1,5 +1,6 @@
 package com.rokannon.math.raycast
 {
+    import com.rokannon.core.pool.ObjectPool;
     import com.rokannon.core.utils.getProperty;
     import com.rokannon.display.render.IRenderTarget;
     import com.rokannon.display.render.IRenderable;
@@ -25,6 +26,7 @@ package com.rokannon.math.raycast
         private static const gridObjectPool:Vector.<GridObject> = new <GridObject>[];
         private static const voxelPool:Vector.<Voxel> = new <Voxel>[];
         private static const helperObject:Object = {};
+        private static const objectPool:ObjectPool = ObjectPool.instance;
 
         private const _voxels:Vector.<Voxel> = new Vector.<Voxel>();
         private const _gridObjectByShape:Dictionary = new Dictionary();
@@ -326,7 +328,7 @@ package com.rokannon.math.raycast
             if (_gridObjectByShape[shape] != null)
                 return;
 
-            var gridObject:GridObject = createGridObject();
+            var gridObject:GridObject = GridObject(objectPool.createObject(GridObject));
             _gridObjectByShape[shape] = gridObject;
             gridObject.shape = shape;
             var bounds:AABBox = shape.getBounds();
@@ -343,7 +345,7 @@ package com.rokannon.math.raycast
                         continue;
                     var voxelIndex:int = getVoxelIndex(indexX, indexY);
                     if (_voxels[voxelIndex] == null)
-                        _voxels[voxelIndex] = createVoxel();
+                        _voxels[voxelIndex] = Voxel(objectPool.createObject(Voxel));
                     var voxel:Voxel = _voxels[voxelIndex];
                     voxel.index = voxelIndex;
                     voxel.gridObjects.push(gridObject);
@@ -366,10 +368,10 @@ package com.rokannon.math.raycast
                 if (voxel.gridObjects.length == 0)
                 {
                     _voxels[voxel.index] = null;
-                    releaseVoxel(voxel);
+                    objectPool.releaseObject(voxel);
                 }
             }
-            releaseGridObject(gridObject);
+            objectPool.releaseObject(gridObject);
         }
 
         [Inline]
@@ -481,32 +483,6 @@ package com.rokannon.math.raycast
             }
 
             return new Grid(voxelWidth, voxelHeight, minIndexX, maxIndexX, minIndexY, maxIndexY);
-        }
-
-        [Inline]
-        private static function createGridObject():GridObject
-        {
-            return gridObjectPool.pop() || new GridObject();
-        }
-
-        [Inline]
-        private static function releaseGridObject(gridObject:GridObject):void
-        {
-            gridObject.reset();
-            gridObjectPool.push(gridObject);
-        }
-
-        [Inline]
-        private static function createVoxel():Voxel
-        {
-            return voxelPool.pop() || new Voxel();
-        }
-
-        [Inline]
-        private static function releaseVoxel(voxel:Voxel):void
-        {
-            voxel.reset();
-            voxelPool.push(voxel);
         }
     }
 }

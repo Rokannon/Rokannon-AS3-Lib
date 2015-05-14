@@ -1,5 +1,7 @@
 package com.rokannon.math.geom
 {
+    import com.rokannon.core.pool.IPoolObject;
+    import com.rokannon.core.pool.ObjectPool;
     import com.rokannon.core.utils.getProperty;
     import com.rokannon.display.render.IRenderTarget;
     import com.rokannon.logging.Log;
@@ -14,7 +16,7 @@ package com.rokannon.math.geom
     import flash.geom.Matrix;
     import flash.geom.Point;
 
-    public class PolygonShape implements IShape
+    public class PolygonShape implements IShape, IPoolObject
     {
         private static const logger:Logger = Log.instance.getLogger(PolygonShape);
         private static const helperSegment1:Segment = new Segment();
@@ -29,7 +31,7 @@ package com.rokannon.math.geom
 
         private var _numVertices:int;
         private var _bounds:AABBox;
-        private var _boundsInvalidated:Boolean;
+        private var _boundsInvalidated:Boolean = true;
 
         public function PolygonShape(vertices:Vector.<Number> = null):void
         {
@@ -354,6 +356,13 @@ package com.rokannon.math.geom
         private final function getTriangleArea(x0:Number, y0:Number, x1:Number, y1:Number, x2:Number, y2:Number):Number
         {
             return 0.5 * getAbs((x2 - x0) * (y1 - y0) - (y2 - y0) * (x1 - x0));
+        }
+
+        public function releasePoolObject():void
+        {
+            vertices.length = 0;
+            _numVertices = 0;
+            _boundsInvalidated = true;
         }
     }
 }

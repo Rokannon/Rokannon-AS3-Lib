@@ -1,5 +1,6 @@
 package com.rokannon.math.geom
 {
+    import com.rokannon.core.pool.IPoolObject;
     import com.rokannon.core.utils.getProperty;
     import com.rokannon.display.render.IRenderTarget;
     import com.rokannon.display.render.IRenderable;
@@ -11,7 +12,7 @@ package com.rokannon.math.geom
     import flash.geom.Point;
     import flash.geom.Rectangle;
 
-    public class AABBox implements IRenderable
+    public class AABBox implements IRenderable, IPoolObject
     {
         private static const logger:Logger = Log.instance.getLogger(AABBox);
         private static const helperSegment:Segment = new Segment();
@@ -373,6 +374,14 @@ package com.rokannon.math.geom
                 renderTarget.drawPolygon(helperVertices, color);
 
             helperVertices.length = 0;
+        }
+
+        public function releasePoolObject():void
+        {
+            _xMin = 0;
+            _yMin = 0;
+            _xMax = 0;
+            _yMax = 0;
         }
     }
 }

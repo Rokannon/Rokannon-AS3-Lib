@@ -1,6 +1,8 @@
 package com.rokannon.math.geom
 {
-    public class Vector3D
+    import com.rokannon.core.pool.IPoolObject;
+
+    public class Vector3D implements IPoolObject
     {
         private var _x:Number;
         private var _y:Number;
@@ -77,6 +79,13 @@ package com.rokannon.math.geom
         private final function cross2D(u1:Number, u2:Number, v1:Number, v2:Number):Number
         {
             return u1 * v2 - u2 * v1;
+        }
+
+        public function releasePoolObject():void
+        {
+            _x = 0;
+            _y = 0;
+            _z = 0;
         }
     }
 }

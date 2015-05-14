@@ -1,8 +1,9 @@
 package com.rokannon.math.raycast
 {
+    import com.rokannon.core.pool.IPoolObject;
     import com.rokannon.math.geom.IShape;
 
-    public class GridObject
+    public class GridObject implements IPoolObject
     {
         public const voxels:Vector.<Voxel> = new Vector.<Voxel>();
 
@@ -13,7 +14,7 @@ package com.rokannon.math.raycast
         {
         }
 
-        public function reset():void
+        public function releasePoolObject():void
         {
             voxels.length = 0;
             lastActionID = 0;
