@@ -1,11 +1,12 @@
 package com.rokannon.math.geom
 {
+    import com.rokannon.core.pool.IPoolObject;
     import com.rokannon.display.render.IRenderable;
 
     import flash.geom.Matrix;
     import flash.geom.Point;
 
-    public interface IShape extends IGeometricObject, IRenderable
+    public interface IShape extends IGeometricObject, IRenderable, IPoolObject
     {
         function getBounds():AABBox;
 

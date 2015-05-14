@@ -1,6 +1,5 @@
 package com.rokannon.math.geom
 {
-    import com.rokannon.core.pool.IPoolObject;
     import com.rokannon.core.utils.getProperty;
     import com.rokannon.display.render.IRenderTarget;
     import com.rokannon.logging.Log;
@@ -12,7 +11,7 @@ package com.rokannon.math.geom
     import flash.geom.Matrix;
     import flash.geom.Point;
 
-    public class CircleShape implements IShape, IPoolObject
+    public class CircleShape implements IShape
     {
         private static const logger:Logger = Log.instance.getLogger(CircleShape);
         private static const helperPoint:Point = new Point();
