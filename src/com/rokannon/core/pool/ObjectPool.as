@@ -14,8 +14,10 @@ package com.rokannon.core.pool
         private static const logger:Logger = Log.instance.getLogger(ObjectPool);
         private static const classUtilsCache:ClassUtilsCache = ClassUtilsCache.instance;
 
-        private var _objectsByClass:Dictionary = new Dictionary();
-        private var _classByObject:Dictionary = new Dictionary();
+        private const _objectsByClass:Dictionary = new Dictionary();
+        private const _classByObject:Dictionary = new Dictionary();
+        private const _handlerClassByObjectClass:Dictionary = new Dictionary();
+        private const _handlerByObject:Dictionary = new Dictionary();
 
         public function ObjectPool()
         {
@@ -23,38 +25,63 @@ package com.rokannon.core.pool
                 throw new SingletonClassError();
         }
 
-        public function createObject(objectClass:Class):IPoolObject
+        public function registerPoolObjectHandler(objectClass:Class, handlerClass:Class):void
         {
-            CONFIG::log_fatal
+            _handlerClassByObjectClass[objectClass] = handlerClass;
+        }
+
+        public function createObject(objectClass:Class):Object
+        {
+            if (!classUtilsCache.implementsInterface(objectClass, IPoolObject))
             {
-                if (!classUtilsCache.implementsInterface(objectClass, IPoolObject))
-                    logger.fatal("Attempt to create pool object using invalid object class.");
+                var handlerClass:Class = _handlerClassByObjectClass[objectClass];
+                CONFIG::log_fatal
+                {
+                    if (handlerClass == null)
+                        logger.fatal("Attempt to create pool object using invalid object class.");
+                }
+                var handler:IPoolHandler = IPoolHandler(createObject(handlerClass));
+                var object:Object = handler.getObject();
+                _handlerByObject[object] = handler;
+                return object;
             }
-            var objects:Vector.<IPoolObject> = getObjectsByClass(objectClass);
-            var object:IPoolObject;
-            if (objects.length == 0)
+
+            var objects:Vector.<IPoolObject> = getPoolObjectsByClass(objectClass);
+            if (objects.length > 0)
+                return objects.pop();
+
+            var poolObject:Object = new objectClass();
+            _classByObject[poolObject] = objectClass;
+            return poolObject;
+        }
+
+        public function releaseObject(object:Object):void
+        {
+            var poolObject:IPoolObject = object as IPoolObject;
+            if (poolObject == null)
             {
-                object = new objectClass();
-                _classByObject[object] = objectClass;
+                var handler:IPoolHandler = _handlerByObject[object];
+                CONFIG::log_fatal
+                {
+                    if (handler == null)
+                        logger.fatal("No handler found during attempt to release object.");
+                }
+                releaseObject(handler);
             }
             else
-                object = objects.pop();
-            return object;
-        }
-
-        public function releaseObject(object:IPoolObject):void
-        {
-            object.resetPoolObject();
-            var objectClass:Class = _classByObject[object];
-            CONFIG::log_fatal
             {
-                if (objectClass == null)
-                    logger.fatal("No object class found during attempt to release pool object.");
+                var objectClass:Class = _classByObject[poolObject];
+                CONFIG::log_fatal
+                {
+                    if (objectClass == null)
+                        logger.fatal("No object class found during attempt to release pool object.");
+                }
+                poolObject.resetPoolObject();
+                getPoolObjectsByClass(objectClass).push(poolObject);
             }
-            getObjectsByClass(objectClass).push(object);
         }
 
-        private function getObjectsByClass(objectClass:Class):Vector.<IPoolObject>
+        private function getPoolObjectsByClass(objectClass:Class):Vector.<IPoolObject>
         {
             var objects:Vector.<IPoolObject>;
             if (objectClass in _objectsByClass)
