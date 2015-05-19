@@ -1,15 +1,15 @@
 package com.rokannon.core.utils.classUtils
 {
-    import com.rokannon.core.ClassUtilsCache;
+    import avmplus.describeType;
 
-    import flash.utils.describeType;
+    import com.rokannon.core.ClassUtilsCache;
 
     public function getClassConstants(classDefinition:Class, type:String = null,
                                       classUtilsCache:ClassUtilsCache = null):Vector.<String>
     {
         var xml:XML;
         if (classUtilsCache == null)
-            xml = describeType(classDefinition);
+            xml = describeType(classDefinition, ~0);
         else
             xml = classUtilsCache.describeType(classDefinition);
 

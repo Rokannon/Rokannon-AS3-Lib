@@ -1,7 +1,7 @@
 package com.rokannon.core.utils.classUtils
 {
-    import flash.utils.describeType;
-    import flash.utils.getQualifiedClassName;
+    import avmplus.describeType;
+    import avmplus.getQualifiedClassName;
 
     import com.rokannon.core.ClassUtilsCache;
 
@@ -16,7 +16,7 @@ package com.rokannon.core.utils.classUtils
 
         var xml:XML;
         if (classUtilsCache == null)
-            xml = describeType(classDefinition);
+            xml = describeType(classDefinition, ~0);
         else
             xml = classUtilsCache.describeType(classDefinition);
 

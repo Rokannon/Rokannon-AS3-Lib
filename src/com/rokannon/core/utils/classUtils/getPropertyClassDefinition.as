@@ -1,8 +1,9 @@
 package com.rokannon.core.utils.classUtils
 {
+    import avmplus.describeType;
+
     import com.rokannon.core.ClassUtilsCache;
 
-    import flash.utils.describeType;
     import flash.utils.getDefinitionByName;
 
     public function getPropertyClassDefinition(classDefinition:Class, propertyName:String,
@@ -10,7 +11,7 @@ package com.rokannon.core.utils.classUtils
     {
         var xml:XML;
         if (classUtilsCache == null)
-            xml = describeType(classDefinition);
+            xml = describeType(classDefinition, ~0);
         else
             xml = classUtilsCache.describeType(classDefinition);
 

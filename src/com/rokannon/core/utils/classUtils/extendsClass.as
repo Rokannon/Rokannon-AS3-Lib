@@ -1,9 +1,10 @@
 package com.rokannon.core.utils.classUtils
 {
+    import avmplus.getQualifiedClassName;
+
     import com.rokannon.core.ClassUtilsCache;
 
     import flash.utils.describeType;
-    import flash.utils.getQualifiedClassName;
 
     public function extendsClass(classDefinition1:Class, classDefinition2:Class,
                                  classUtilsCache:ClassUtilsCache = null):Boolean
