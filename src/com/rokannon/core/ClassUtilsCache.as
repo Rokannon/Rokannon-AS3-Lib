@@ -10,7 +10,6 @@ package com.rokannon.core
     import com.rokannon.core.utils.classUtils.implementsInterface;
 
     import flash.utils.Dictionary;
-    import flash.utils.describeType;
 
     public class ClassUtilsCache
     {
@@ -19,7 +18,7 @@ package com.rokannon.core
         private const _typeDescriptionByValue:Dictionary = new Dictionary(true);
         private const _definitionByName:Dictionary = new Dictionary();
         private const _nameByValue:Dictionary = new Dictionary(true);
-        private const _propertiesByClass:Dictionary = new Dictionary();
+        private const _propertiesByClassAndType:TwoKeysDictionary = new TwoKeysDictionary();
         private const _classDefinitionByClassAndName:TwoKeysDictionary = new TwoKeysDictionary();
         private const _extendsClassByClasses:TwoKeysDictionary = new TwoKeysDictionary();
         private const _constantsByClassAndType:TwoKeysDictionary = new TwoKeysDictionary();
@@ -60,12 +59,12 @@ package com.rokannon.core
         // com.rokannon.core.utils.classUtils
         //
 
-        public function getClassVariables(classDefinition:Class):Vector.<String>
+        public function getClassVariables(classDefinition:Class, type:String = null):Vector.<String>
         {
-            if (!(classDefinition in _propertiesByClass))
-                _propertiesByClass[classDefinition] = com.rokannon.core.utils.classUtils.getClassVariables(classDefinition,
-                    this);
-            return _propertiesByClass[classDefinition];
+            if (!_propertiesByClassAndType.hasValue(classDefinition, type))
+                _propertiesByClassAndType.setValue(classDefinition, type,
+                    com.rokannon.core.utils.classUtils.getClassVariables(classDefinition, type, this));
+            return _propertiesByClassAndType.getValue(classDefinition, type);
         }
 
         public function getPropertyClassDefinition(classDefinition:Class, propertyName:String):Class
