@@ -4,7 +4,7 @@ package com.rokannon.core.utils.classUtils
 
     import flash.utils.describeType;
 
-    public function getClassConstants(classDefinition:Class, type:String = null,
+    public function getClassStaticConstants(classDefinition:Class, type:String = null,
                                       classUtilsCache:ClassUtilsCache = null):Vector.<String>
     {
         var xml:XML;

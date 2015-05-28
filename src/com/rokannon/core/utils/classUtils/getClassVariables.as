@@ -4,7 +4,7 @@ package com.rokannon.core.utils.classUtils
 
     import flash.utils.describeType;
 
-    public function getClassProperties(classDefinition:Class, classUtilsCache:ClassUtilsCache = null):Vector.<String>
+    public function getClassVariables(classDefinition:Class, classUtilsCache:ClassUtilsCache = null):Vector.<String>
     {
         var xml:XML;
         if (classUtilsCache == null)

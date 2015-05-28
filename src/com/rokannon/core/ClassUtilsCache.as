@@ -4,8 +4,8 @@ package com.rokannon.core
 
     import com.rokannon.core.errors.SingletonClassError;
     import com.rokannon.core.utils.classUtils.extendsClass;
-    import com.rokannon.core.utils.classUtils.getClassConstants;
-    import com.rokannon.core.utils.classUtils.getClassProperties;
+    import com.rokannon.core.utils.classUtils.getClassStaticConstants;
+    import com.rokannon.core.utils.classUtils.getClassVariables;
     import com.rokannon.core.utils.classUtils.getPropertyClassDefinition;
     import com.rokannon.core.utils.classUtils.implementsInterface;
 
@@ -60,10 +60,10 @@ package com.rokannon.core
         // com.rokannon.core.utils.classUtils
         //
 
-        public function getClassProperties(classDefinition:Class):Vector.<String>
+        public function getClassVariables(classDefinition:Class):Vector.<String>
         {
             if (!(classDefinition in _propertiesByClass))
-                _propertiesByClass[classDefinition] = com.rokannon.core.utils.classUtils.getClassProperties(classDefinition,
+                _propertiesByClass[classDefinition] = com.rokannon.core.utils.classUtils.getClassVariables(classDefinition,
                     this);
             return _propertiesByClass[classDefinition];
         }
@@ -84,11 +84,11 @@ package com.rokannon.core
             return _extendsClassByClasses.getValue(classDefinition1, classDefinition2);
         }
 
-        public function getClassConstants(classDefinition:Class, type:String = null):Vector.<String>
+        public function getClassStaticConstants(classDefinition:Class, type:String = null):Vector.<String>
         {
             if (!_constantsByClassAndType.hasValue(classDefinition, type))
                 _constantsByClassAndType.setValue(classDefinition, type,
-                    com.rokannon.core.utils.classUtils.getClassConstants(classDefinition, type, this));
+                    com.rokannon.core.utils.classUtils.getClassStaticConstants(classDefinition, type, this));
             return _constantsByClassAndType.getValue(classDefinition, type);
         }
 
