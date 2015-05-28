@@ -4,6 +4,7 @@ package com.rokannon.core
 
     import com.rokannon.core.errors.SingletonClassError;
     import com.rokannon.core.utils.classUtils.extendsClass;
+    import com.rokannon.core.utils.classUtils.getClassConstants;
     import com.rokannon.core.utils.classUtils.getClassStaticConstants;
     import com.rokannon.core.utils.classUtils.getClassVariables;
     import com.rokannon.core.utils.classUtils.getPropertyClassDefinition;
@@ -18,11 +19,13 @@ package com.rokannon.core
         private const _typeDescriptionByValue:Dictionary = new Dictionary(true);
         private const _definitionByName:Dictionary = new Dictionary();
         private const _nameByValue:Dictionary = new Dictionary(true);
-        private const _propertiesByClassAndType:TwoKeysDictionary = new TwoKeysDictionary();
+        private const _variablesByClassAndType:TwoKeysDictionary = new TwoKeysDictionary();
         private const _classDefinitionByClassAndName:TwoKeysDictionary = new TwoKeysDictionary();
         private const _extendsClassByClasses:TwoKeysDictionary = new TwoKeysDictionary();
-        private const _constantsByClassAndType:TwoKeysDictionary = new TwoKeysDictionary();
+        private const _staticConstantsByClassAndType:TwoKeysDictionary = new TwoKeysDictionary();
         private const _implementsInterfaceByClassAndInterface:TwoKeysDictionary = new TwoKeysDictionary();
+        private const _constantsByClassAndType:TwoKeysDictionary = new TwoKeysDictionary();
+        private const _staticVariablesByClassAndType:TwoKeysDictionary = new TwoKeysDictionary();
 
         public function ClassUtilsCache()
         {
@@ -61,10 +64,10 @@ package com.rokannon.core
 
         public function getClassVariables(classDefinition:Class, type:String = null):Vector.<String>
         {
-            if (!_propertiesByClassAndType.hasValue(classDefinition, type))
-                _propertiesByClassAndType.setValue(classDefinition, type,
+            if (!_variablesByClassAndType.hasValue(classDefinition, type))
+                _variablesByClassAndType.setValue(classDefinition, type,
                     com.rokannon.core.utils.classUtils.getClassVariables(classDefinition, type, this));
-            return _propertiesByClassAndType.getValue(classDefinition, type);
+            return _variablesByClassAndType.getValue(classDefinition, type);
         }
 
         public function getPropertyClassDefinition(classDefinition:Class, propertyName:String):Class
@@ -85,10 +88,10 @@ package com.rokannon.core
 
         public function getClassStaticConstants(classDefinition:Class, type:String = null):Vector.<String>
         {
-            if (!_constantsByClassAndType.hasValue(classDefinition, type))
-                _constantsByClassAndType.setValue(classDefinition, type,
+            if (!_staticConstantsByClassAndType.hasValue(classDefinition, type))
+                _staticConstantsByClassAndType.setValue(classDefinition, type,
                     com.rokannon.core.utils.classUtils.getClassStaticConstants(classDefinition, type, this));
-            return _constantsByClassAndType.getValue(classDefinition, type);
+            return _staticConstantsByClassAndType.getValue(classDefinition, type);
         }
 
         public function implementsInterface(classDefinition:Class, interfaceDefinition:Class):Boolean
@@ -97,6 +100,22 @@ package com.rokannon.core
                 _implementsInterfaceByClassAndInterface.setValue(classDefinition, interfaceDefinition,
                     com.rokannon.core.utils.classUtils.implementsInterface(classDefinition, interfaceDefinition, this));
             return _implementsInterfaceByClassAndInterface.getValue(classDefinition, interfaceDefinition);
+        }
+
+        public function getClassConstants(classDefinition:Class, type:String = null):Vector.<String>
+        {
+            if (!_constantsByClassAndType.hasValue(classDefinition, type))
+                _constantsByClassAndType.setValue(classDefinition, type,
+                    com.rokannon.core.utils.classUtils.getClassConstants(classDefinition, type, this));
+            return _constantsByClassAndType.getValue(classDefinition, type);
+        }
+
+        public function getClassStaticVariables(classDefinition:Class, type:String = null):Vector.<String>
+        {
+            if (!_staticVariablesByClassAndType.hasValue(classDefinition, type))
+                _staticVariablesByClassAndType.setValue(classDefinition, type,
+                    com.rokannon.core.utils.classUtils.getClassStaticVariables(classDefinition, type, this));
+            return _staticVariablesByClassAndType.getValue(classDefinition, type);
         }
     }
 }
