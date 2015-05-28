@@ -1,14 +1,14 @@
 package com.rokannon.core.utils.classUtils
 {
-    import avmplus.describeType;
-
     import com.rokannon.core.ClassUtilsCache;
+
+    import flash.utils.describeType;
 
     public function getClassProperties(classDefinition:Class, classUtilsCache:ClassUtilsCache = null):Vector.<String>
     {
         var xml:XML;
         if (classUtilsCache == null)
-            xml = describeType(classDefinition, ~0);
+            xml = describeType(classDefinition);
         else
             xml = classUtilsCache.describeType(classDefinition);
 

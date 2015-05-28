@@ -1,9 +1,10 @@
 package com.rokannon.core.utils.classUtils
 {
-    import avmplus.describeType;
     import avmplus.getQualifiedClassName;
 
     import com.rokannon.core.ClassUtilsCache;
+
+    import flash.utils.describeType;
 
     public function implementsInterface(classDefinition:Class, interfaceDefinition:Class,
                                         classUtilsCache:ClassUtilsCache = null):Boolean
@@ -16,7 +17,7 @@ package com.rokannon.core.utils.classUtils
 
         var xml:XML;
         if (classUtilsCache == null)
-            xml = describeType(classDefinition, ~0);
+            xml = describeType(classDefinition);
         else
             xml = classUtilsCache.describeType(classDefinition);
 

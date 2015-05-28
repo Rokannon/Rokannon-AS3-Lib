@@ -1,6 +1,5 @@
 package com.rokannon.core
 {
-    import avmplus.describeType;
     import avmplus.getQualifiedClassName;
 
     import com.rokannon.core.errors.SingletonClassError;
@@ -11,6 +10,7 @@ package com.rokannon.core
     import com.rokannon.core.utils.classUtils.implementsInterface;
 
     import flash.utils.Dictionary;
+    import flash.utils.describeType;
 
     public class ClassUtilsCache
     {
@@ -38,7 +38,7 @@ package com.rokannon.core
         public function describeType(value:*):XML
         {
             if (!(value in _typeDescriptionByValue))
-                _typeDescriptionByValue[value] = avmplus.describeType(value, ~0);
+                _typeDescriptionByValue[value] = flash.utils.describeType(value);
             return _typeDescriptionByValue[value];
         }
 
