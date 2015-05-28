@@ -1,5 +1,6 @@
 package com.rokannon.core.pool
 {
+    import com.rokannon.core.Broadcaster;
     import com.rokannon.core.ClassUtilsCache;
     import com.rokannon.core.errors.SingletonClassError;
     import com.rokannon.logging.Log;
@@ -43,6 +44,7 @@ package com.rokannon.core.pool
                 var handler:IPoolHandler = IPoolHandler(createObject(handlerClass));
                 var object:Object = handler.getObject();
                 _handlerByObject[object] = handler;
+                _classByObject[object] = objectClass;
                 return object;
             }
 
@@ -79,6 +81,19 @@ package com.rokannon.core.pool
                 poolObject.resetPoolObject();
                 getPoolObjectsByClass(objectClass).push(poolObject);
             }
+            CONFIG::debug
+            {
+                CONFIG::log_warn
+                {
+                    var broadcasterQName:String = classUtilsCache.getQualifiedClassName(Broadcaster);
+                    for each (var variableName:String in classUtilsCache.getClassVariables(_classByObject[object],
+                        broadcasterQName))
+                        checkObjectBroadcaster(object, variableName);
+                    for each (var constantName:String in classUtilsCache.getClassConstants(_classByObject[object],
+                        broadcasterQName))
+                        checkObjectBroadcaster(object, constantName);
+                }
+            }
         }
 
         private function getPoolObjectsByClass(objectClass:Class):Vector.<IPoolObject>
@@ -92,6 +107,13 @@ package com.rokannon.core.pool
                 _objectsByClass[objectClass] = objects;
             }
             return objects;
+        }
+
+        private function checkObjectBroadcaster(object:Object, broadcasterName:String):void
+        {
+            var broadcaster:Broadcaster = object[broadcasterName];
+            if (broadcaster != null && broadcaster.numCallbacks > 0)
+                logger.warn("Broadcaster '{0}' is not empty on object reset.", broadcasterName);
         }
     }
 }
