@@ -2,14 +2,16 @@ package com.rokannon.core.command
 {
     import com.rokannon.core.Broadcaster;
     import com.rokannon.core.command.enum.CommandState;
+    import com.rokannon.core.pool.ObjectPool;
     import com.rokannon.core.utils.callOutStack;
 
     public class CommandExecutor
     {
+        private static const objectPool:ObjectPool = ObjectPool.instance;
+
         public const eventExecuteStart:Broadcaster = new Broadcaster(this);
         public const eventExecuteEnd:Broadcaster = new Broadcaster(this);
 
-        private const _queueItemPool:Vector.<QueueItem> = new <QueueItem>[];
         private const _commandsQueue:Vector.<QueueItem> = new <QueueItem>[];
         private var _isExecuting:Boolean = false;
         private var _executeNextPending:Boolean = false;
@@ -22,7 +24,7 @@ package com.rokannon.core.command
 
         public function pushCommand(command:CommandBase, prevCommandResult:Boolean = true):void
         {
-            var queueItem:QueueItem = createQueueItem();
+            var queueItem:QueueItem = QueueItem(objectPool.createObject(QueueItem));
             queueItem.command = command;
             queueItem.prevCommandResult = prevCommandResult;
             insertCommandAt(queueItem, _insertPointer);
@@ -49,7 +51,7 @@ package com.rokannon.core.command
         public function removeAllCommands():void
         {
             for (var i:int = _commandsQueue.length - 1; i >= 0; --i)
-                releaseQueueItem(_commandsQueue[i]);
+                objectPool.releaseObject(_commandsQueue[i]);
             _commandsQueue.length = 0;
             _insertPointer = 0;
             _executeNextPending = false;
@@ -117,18 +119,7 @@ package com.rokannon.core.command
                 _isExecuting = false;
                 eventExecuteEnd.broadcast();
             }
-            releaseQueueItem(queueItem);
-        }
-
-        private function createQueueItem():QueueItem
-        {
-            return _queueItemPool.pop() || new QueueItem();
-        }
-
-        private function releaseQueueItem(queueItem:QueueItem):void
-        {
-            queueItem.command = null;
-            _queueItemPool.push(queueItem)
+            objectPool.releaseObject(queueItem);
         }
     }
 }
