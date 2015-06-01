@@ -1,19 +1,19 @@
 package com.rokannon.core
 {
+    import com.rokannon.core.pool.IPoolObject;
     import com.rokannon.core.utils.dictionary.clearDictionary;
     import com.rokannon.core.utils.dictionary.isDictionaryEmpty;
 
     import flash.utils.Dictionary;
 
-    public class TwoKeysDictionary
+    public class TwoKeysDictionary implements IPoolObject
     {
         private static const dictionaryPool:Vector.<Dictionary> = new Vector.<Dictionary>();
 
-        private var _valueByKey1AndKey2:Dictionary;
+        private const _valueByKey1AndKey2:Dictionary = new Dictionary();
 
         public function TwoKeysDictionary()
         {
-            _valueByKey1AndKey2 = createDictionary();
         }
 
         public function setValue(key1:*, key2:*, value:*):void
@@ -76,7 +76,12 @@ package com.rokannon.core
         {
             for each (var dictionary:Dictionary in _valueByKey1AndKey2)
                 releaseDictionary(dictionary);
-            releaseDictionary(_valueByKey1AndKey2);
+            clearDictionary(_valueByKey1AndKey2);
+        }
+
+        public function resetPoolObject():void
+        {
+            clear();
         }
 
         [Inline]
