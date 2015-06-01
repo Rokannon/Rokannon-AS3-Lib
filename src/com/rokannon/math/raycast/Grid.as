@@ -23,8 +23,6 @@ package com.rokannon.math.raycast
         private static const logger:Logger = Log.instance.getLogger(Grid);
         private static const helperBox:AABBox = new AABBox();
         private static const helperSegment:Segment = new Segment();
-        private static const gridObjectPool:Vector.<GridObject> = new <GridObject>[];
-        private static const voxelPool:Vector.<Voxel> = new <Voxel>[];
         private static const helperObject:Object = {};
         private static const objectPool:ObjectPool = ObjectPool.instance;
 
