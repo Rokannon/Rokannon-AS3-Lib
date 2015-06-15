@@ -1,11 +1,11 @@
 package com.rokannon.core.utils.string
 {
-    public function getExtension(string:String):String
+    public function getExtension(path:String, pathSeparator:String = "/"):String
     {
-        var indexOfDot:int = string.lastIndexOf(".");
-        var indexOfSlash:int = string.lastIndexOf("/");
+        var indexOfDot:int = path.lastIndexOf(".");
+        var indexOfSlash:int = path.lastIndexOf(pathSeparator);
         if (indexOfDot <= indexOfSlash)
             return "";
-        return cleanMasterString(string.substr(indexOfDot + 1).toLowerCase());
+        return cleanMasterString(path.substr(indexOfDot + 1).toLowerCase());
     }
 }
