@@ -2,8 +2,11 @@ package com.rokannon.core.command
 {
     import com.rokannon.core.Broadcaster;
     import com.rokannon.core.command.enum.CommandState;
+    import com.rokannon.core.command.enum.ExecutorState;
     import com.rokannon.core.pool.ObjectPool;
     import com.rokannon.core.utils.callOutStack;
+
+    import flash.utils.clearInterval;
 
     public class CommandExecutor
     {
@@ -13,10 +16,10 @@ package com.rokannon.core.command
         public const eventExecuteEnd:Broadcaster = new Broadcaster(this);
 
         private const _commandsQueue:Vector.<QueueItem> = new <QueueItem>[];
-        private var _isExecuting:Boolean = false;
-        private var _executeNextPending:Boolean = false;
         private var _insertPointer:int = 0;
         private var _lastCommandResult:Boolean = true;
+        private var _executorState:String = ExecutorState.IDLE;
+        private var _waitingInterval:uint = 0;
 
         public function CommandExecutor()
         {
@@ -29,8 +32,11 @@ package com.rokannon.core.command
             queueItem.prevCommandResult = prevCommandResult;
             insertCommandAt(queueItem, _insertPointer);
             ++_insertPointer;
-            if (!_isExecuting)
+            if (_executorState == ExecutorState.IDLE)
+            {
                 executeNext();
+                eventExecuteStart.broadcast();
+            }
         }
 
         public function pushMethod(method:Function, prevCommandResult:Boolean = true, params:Object = null):void
@@ -40,7 +46,7 @@ package com.rokannon.core.command
 
         public function get isExecuting():Boolean
         {
-            return _isExecuting;
+            return _executorState != ExecutorState.IDLE;
         }
 
         public function get lastCommandResult():Boolean
@@ -54,30 +60,33 @@ package com.rokannon.core.command
                 objectPool.releaseObject(_commandsQueue[i]);
             _commandsQueue.length = 0;
             _insertPointer = 0;
-            _executeNextPending = false;
-            if (!_isExecuting)
-                _lastCommandResult = true;
+            if (_executorState == ExecutorState.WAITING)
+            {
+                _executorState = ExecutorState.IDLE;
+                clearInterval(_waitingInterval);
+                eventExecuteEnd.broadcast();
+            }
         }
 
         private function executeNext():void
         {
-            if (!_executeNextPending)
-            {
-                _executeNextPending = true;
-                callOutStack(doExecuteNext);
-            }
+            _executorState = ExecutorState.WAITING;
+            _waitingInterval = callOutStack(doExecuteNext, 0);
         }
 
         private function onCommandFinished(command:CommandBase):void
         {
             command.eventComplete.remove(onCommandFinished);
             command.eventFailed.remove(onCommandFinished);
-            _lastCommandResult = command.state == CommandState.COMPLETE;
             if (_commandsQueue.length > 0)
+            {
+                _lastCommandResult = command.state == CommandState.COMPLETE;
                 executeNext();
+            }
             else
             {
-                _isExecuting = false;
+                _lastCommandResult = true;
+                _executorState = ExecutorState.IDLE;
                 eventExecuteEnd.broadcast();
             }
         }
@@ -92,31 +101,21 @@ package com.rokannon.core.command
 
         private function doExecuteNext():void
         {
-            // This guard clause means that all commands were removed.
-            if (!_executeNextPending)
-                return;
-
-            _executeNextPending = false;
             _insertPointer = 0;
             var queueItem:QueueItem = _commandsQueue.shift();
             if (queueItem.prevCommandResult == _lastCommandResult)
             {
+                _executorState = ExecutorState.EXECUTING;
                 var command:CommandBase = queueItem.command;
                 command.eventComplete.add(onCommandFinished);
                 command.eventFailed.add(onCommandFinished);
-                if (!_isExecuting)
-                {
-                    _isExecuting = true;
-                    eventExecuteStart.broadcast();
-                }
-
                 command.execute();
             }
             else if (_commandsQueue.length > 0)
                 executeNext();
-            else if (_isExecuting)
+            else
             {
-                _isExecuting = false;
+                _executorState = ExecutorState.IDLE;
                 eventExecuteEnd.broadcast();
             }
             objectPool.releaseObject(queueItem);
