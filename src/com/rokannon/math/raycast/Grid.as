@@ -385,10 +385,8 @@ package com.rokannon.math.raycast
         }
 
         [Inline]
-        private final function getVoxelBounds(indexX:int, indexY:int, resultBounds:AABBox = null):AABBox
+        private final function getVoxelBounds(indexX:int, indexY:int, resultBounds:AABBox):AABBox
         {
-            if (resultBounds == null)
-                resultBounds = new AABBox();
             resultBounds.setTo(indexX * _voxelWidth, indexY * _voxelHeight, (indexX + 1) * _voxelWidth,
                 (indexY + 1) * _voxelHeight);
             return resultBounds;
