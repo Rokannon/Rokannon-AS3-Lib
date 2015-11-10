@@ -5,8 +5,7 @@ package com.rokannon.math.utils.rectangle
 
     public function getRectangleVertex(index:int, rectangle:Rectangle, resultPoint:Point = null):Point
     {
-        if (resultPoint == null)
-            resultPoint = new Point();
+        resultPoint ||= new Point();
         index = index & 3;
         resultPoint.setTo(rectangle.x + (((index + 1) & 3) >> 1) * rectangle.width,
             rectangle.y + (index >> 1) * rectangle.height);

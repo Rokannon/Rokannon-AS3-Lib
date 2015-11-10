@@ -82,8 +82,7 @@ package com.rokannon.math.geom
 
         public function closestPointToXY(x:Number, y:Number, resultPoint:Point = null):Point
         {
-            if (resultPoint == null)
-                resultPoint = new Point();
+            resultPoint ||= new Point();
             var d:Number = Math.sqrt((x - _x) * (x - _x) + (y - _y) * (y - _y));
             if (d == 0)
                 resultPoint.setTo(_x + _radius, y);
@@ -104,8 +103,7 @@ package com.rokannon.math.geom
         {
             if (_boundsInvalidated)
             {
-                if (_bounds == null)
-                    _bounds = new AABBox();
+                _bounds ||= new AABBox();
                 _bounds.setTo(_x - _radius, _y - _radius, _x + _radius, _y + _radius);
                 _boundsInvalidated = false;
             }
@@ -161,8 +159,7 @@ package com.rokannon.math.geom
 
         public function getRandomPoint(resultPoint:Point = null):Point
         {
-            if (resultPoint == null)
-                resultPoint = new Point();
+            resultPoint ||= new Point();
             var t:Number = 2 * Math.PI * Math.random();
             var u:Number = Math.random() + Math.random();
             var r:Number = u > 1 ? 2 - u : u;
@@ -172,8 +169,7 @@ package com.rokannon.math.geom
 
         public function getInternalPoint(resultPoint:Point = null):Point
         {
-            if (resultPoint == null)
-                resultPoint = new Point();
+            resultPoint ||= new Point();
             resultPoint.setTo(_x, _y);
             return resultPoint;
         }

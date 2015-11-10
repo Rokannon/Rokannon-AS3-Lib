@@ -60,8 +60,7 @@ package com.rokannon.core
 
         public function getValuesByKey1(key1:*, resultValues:Array = null):Array
         {
-            if (resultValues == null)
-                resultValues = [];
+            resultValues ||= [];
             if (key1 in _valueByKey1AndKey2)
             {
                 var valueByKey2:Dictionary = _valueByKey1AndKey2[key1];

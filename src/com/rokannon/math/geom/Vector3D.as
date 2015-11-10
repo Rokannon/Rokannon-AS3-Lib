@@ -60,16 +60,14 @@ package com.rokannon.math.geom
 
         public function cross(v:Vector3D, resultVector:Vector3D = null):Vector3D
         {
-            if (resultVector == null)
-                resultVector = new Vector3D();
+            resultVector ||= new Vector3D();
             resultVector.setTo(cross2D(_y, v._y, _z, v._z), -cross2D(_x, v._x, _z, v._z), cross2D(_x, v._x, _y, v._y));
             return resultVector;
         }
 
         public function normalize(length:Number, resultVector:Vector3D = null):Vector3D
         {
-            if (resultVector == null)
-                resultVector = new Vector3D();
+            resultVector ||= new Vector3D();
             var t:Number = length / getLength();
             resultVector.setTo(t * _x, t * _y, t * _z);
             return resultVector;

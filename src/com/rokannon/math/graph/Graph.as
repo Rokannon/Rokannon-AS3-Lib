@@ -91,10 +91,7 @@ package com.rokannon.math.graph
                 }
             }
 
-            if (resultNodes == null)
-                resultNodes = new Vector.<Node>();
-            else
-                resultNodes.length = 0;
+            resultNodes ||= new Vector.<Node>();
             if (endNode.known)
             {
                 node = endNode;

@@ -8,8 +8,7 @@ package com.rokannon.math.utils.rectangle
     public function unionRectangle(rectangle1:Rectangle, rectangle2:Rectangle,
                                    resultRectangle:Rectangle = null):Rectangle
     {
-        if (resultRectangle == null)
-            resultRectangle = new Rectangle();
+        resultRectangle ||= new Rectangle();
         var x:Number = getMin(rectangle1.x, rectangle2.x);
         var y:Number = getMin(rectangle1.y, rectangle2.y);
         resultRectangle.setTo(x, y, getMax(rectangle1.x + rectangle1.width, rectangle2.x + rectangle2.width) - x,

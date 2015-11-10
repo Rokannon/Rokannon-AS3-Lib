@@ -72,8 +72,7 @@ package com.rokannon.math.geom
         /** 0 to 3 */
         public function getVertex(index:int, resultPoint:Point = null):Point
         {
-            if (resultPoint == null)
-                resultPoint = new Point();
+            resultPoint ||= new Point();
             index = index & 3;
             resultPoint.setTo((((index + 1) & 3) >> 1) == 0 ? _xMin : _xMax, (index >> 1) == 0 ? _yMin : _yMax);
             return resultPoint;
@@ -82,8 +81,7 @@ package com.rokannon.math.geom
         /** 0 to 3 */
         public function getSide(index:int, resultSegment:Segment = null):Segment
         {
-            if (resultSegment == null)
-                resultSegment = new Segment();
+            resultSegment ||= new Segment();
             index = index & 3;
             resultSegment.setTo(((index & 1) ^ (index >> 1)) == 0 ? _xMin : _xMax, (index >> 1) == 0 ? _yMin : _yMax,
                 ((index ^ 2) >> 1) == 0 ? _xMin : _xMax, ((index & 1) ^ (index >> 1)) == 0 ? _yMin : _yMax);
@@ -102,8 +100,7 @@ package com.rokannon.math.geom
 
         public function toRectangle(resultRectangle:Rectangle = null):Rectangle
         {
-            if (resultRectangle == null)
-                resultRectangle = new Rectangle();
+            resultRectangle ||= new Rectangle();
             resultRectangle.setTo(_xMin, _yMin, _xMax - _xMin, _yMax - _yMin);
             return resultRectangle;
         }
@@ -116,8 +113,7 @@ package com.rokannon.math.geom
                 helperVertices[i << 1] = helperPoint.x;
                 helperVertices[(i << 1) + 1] = helperPoint.y;
             }
-            if (resultPolygon == null)
-                resultPolygon = new PolygonShape();
+            resultPolygon ||= new PolygonShape();
             resultPolygon.setTo(helperVertices);
             helperVertices.length = 0;
             return resultPolygon;
@@ -125,8 +121,7 @@ package com.rokannon.math.geom
 
         public function union(box:AABBox, resultBox:AABBox = null):AABBox
         {
-            if (resultBox == null)
-                resultBox = new AABBox();
+            resultBox ||= new AABBox();
             resultBox.setTo(getMin(_xMin, box._xMin), getMin(_yMin, box._yMin), getMax(_xMax, box._xMax),
                 getMax(_yMax, box._yMax));
             return resultBox;
@@ -200,8 +195,7 @@ package com.rokannon.math.geom
 
         public function closestPointToXY(x:Number, y:Number, resultPoint:Point = null):Point
         {
-            if (resultPoint == null)
-                resultPoint = new Point();
+            resultPoint ||= new Point();
             if (x < _xMin)
             {
                 if (y < _yMin)

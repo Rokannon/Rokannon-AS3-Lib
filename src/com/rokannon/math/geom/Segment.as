@@ -56,16 +56,14 @@ package com.rokannon.math.geom
 
         public function getPoint1(resultPoint:Point = null):Point
         {
-            if (resultPoint == null)
-                resultPoint = new Point();
+            resultPoint ||= new Point();
             resultPoint.setTo(_x1, _y1);
             return resultPoint;
         }
 
         public function getPoint2(resultPoint:Point = null):Point
         {
-            if (resultPoint == null)
-                resultPoint = new Point();
+            resultPoint ||= new Point();
             resultPoint.setTo(_x2, _y2);
             return resultPoint;
         }
@@ -80,16 +78,14 @@ package com.rokannon.math.geom
 
         public function toVector2D(resultVector:Vector2D = null):Vector2D
         {
-            if (resultVector == null)
-                resultVector = new Vector2D();
+            resultVector ||= new Vector2D();
             resultVector.setTo(_x2 - _x1, _y2 - _y1);
             return resultVector;
         }
 
         public function lerp(t:Number, resultPoint:Point = null):Point
         {
-            if (resultPoint == null)
-                resultPoint = new Point();
+            resultPoint ||= new Point();
             resultPoint = toVector2D(helperVector1).lerp(t, resultPoint);
             resultPoint.offset(_x1, _y1);
             return resultPoint;
@@ -97,8 +93,7 @@ package com.rokannon.math.geom
 
         public function shift(t:Number, s:Number, resultPoint:Point = null):Point
         {
-            if (resultPoint == null)
-                resultPoint = new Point();
+            resultPoint ||= new Point();
             resultPoint = toVector2D(helperVector1).shift(t, s, resultPoint);
             resultPoint.offset(_x1, _y1);
             return resultPoint;
@@ -188,8 +183,7 @@ package com.rokannon.math.geom
 
         public function closestPointToXY(x:Number, y:Number, resultPoint:Point = null):Point
         {
-            if (resultPoint == null)
-                resultPoint = new Point();
+            resultPoint ||= new Point();
             resultPoint = toVector2D(helperVector1).closestPointToXY(x - _x1, y - _y1, resultPoint);
             resultPoint.offset(_x1, _y1);
             return resultPoint;

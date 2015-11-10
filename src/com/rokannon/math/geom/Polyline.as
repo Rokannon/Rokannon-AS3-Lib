@@ -55,8 +55,7 @@ package com.rokannon.math.geom
         /** From 0 to numVertices - 1. */
         public function getVertex(index:int, resultPoint:Point = null):Point
         {
-            if (resultPoint == null)
-                resultPoint = new Point();
+            resultPoint ||= new Point();
             while (index < 0)
                 index += _numVertices;
             index = index % _numVertices;
@@ -67,8 +66,7 @@ package com.rokannon.math.geom
         /** From 0 to numVertices - 2. */
         public function getSide(index:int, resultSegment:Segment = null):Segment
         {
-            if (resultSegment == null)
-                resultSegment = new Segment();
+            resultSegment ||= new Segment();
             getVertex(index, helperPoint1);
             var x1:Number = helperPoint1.x;
             var y1:Number = helperPoint1.y;
@@ -80,8 +78,7 @@ package com.rokannon.math.geom
         public function proceedXY(x:Number, y:Number, d:Number, resultPoint:Point = null):Point
         {
             d = getMax(d, 0);
-            if (resultPoint == null)
-                resultPoint = new Point();
+            resultPoint ||= new Point();
             helperPoint2.setTo(x, y);
             var distance:Number = Infinity;
             var sideIndex:int;
@@ -151,8 +148,7 @@ package com.rokannon.math.geom
 
         public function closestPointToXY(x:Number, y:Number, resultPoint:Point = null):Point
         {
-            if (resultPoint == null)
-                resultPoint = new Point();
+            resultPoint ||= new Point();
             helperPoint2.setTo(x, y);
             var distance:Number = Infinity;
             for (var i:int = 0; i < _numVertices - 1; ++i)

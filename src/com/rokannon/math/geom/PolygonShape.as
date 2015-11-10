@@ -1,6 +1,5 @@
 package com.rokannon.math.geom
 {
-    import com.rokannon.core.pool.IPoolObject;
     import com.rokannon.core.utils.getProperty;
     import com.rokannon.display.render.IRenderTarget;
     import com.rokannon.logging.Log;
@@ -61,8 +60,7 @@ package com.rokannon.math.geom
 
         public function getVertex(index:int, resultPoint:Point = null):Point
         {
-            if (resultPoint == null)
-                resultPoint = new Point();
+            resultPoint ||= new Point();
             while (index < 0)
                 index += _numVertices;
             index %= _numVertices;
@@ -72,8 +70,7 @@ package com.rokannon.math.geom
 
         public function getSide(index:int, resultSegment:Segment = null):Segment
         {
-            if (resultSegment == null)
-                resultSegment = new Segment();
+            resultSegment ||= new Segment();
             while (index < 0)
                 index += _numVertices;
             index %= _numVertices;
@@ -147,8 +144,7 @@ package com.rokannon.math.geom
 
         public function closestPointToXY(x:Number, y:Number, resultPoint:Point = null):Point
         {
-            if (resultPoint == null)
-                resultPoint = new Point();
+            resultPoint ||= new Point();
             helperPoint2.setTo(x, y);
             var distance:Number = Infinity;
             for (var i:int = 0; i < _numVertices; ++i)
@@ -184,8 +180,7 @@ package com.rokannon.math.geom
                     bottom = getMin(vertices[i + 1], bottom);
                     top = getMax(vertices[i + 1], top);
                 }
-                if (_bounds == null)
-                    _bounds = new AABBox();
+                _bounds ||= new AABBox();
                 _bounds.setTo(left, bottom, right, top);
                 _boundsInvalidated = false;
             }
@@ -295,8 +290,7 @@ package com.rokannon.math.geom
                     logger.fatal("Unable to get random point in non-convex polygon.");
             }
 
-            if (resultPoint == null)
-                resultPoint = new Point();
+            resultPoint ||= new Point();
             var polygonArea:Number = 0;
             var area:Number;
             var i:int;

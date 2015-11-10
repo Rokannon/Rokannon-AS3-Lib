@@ -47,8 +47,7 @@ package com.rokannon.math.geom
 
         public function clone(resultVector:Vector2D = null):Vector2D
         {
-            if (resultVector == null)
-                resultVector = new Vector2D();
+            resultVector ||= new Vector2D();
             resultVector.setTo(_x, _y);
             return resultVector;
         }
@@ -65,16 +64,14 @@ package com.rokannon.math.geom
 
         public function lerp(t:Number, resultPoint:Point = null):Point
         {
-            if (resultPoint == null)
-                resultPoint = new Point();
+            resultPoint ||= new Point();
             resultPoint.setTo(t * _x, t * _y);
             return resultPoint;
         }
 
         public function shift(t:Number, s:Number, resultPoint:Point = null):Point
         {
-            if (resultPoint == null)
-                resultPoint = new Point();
+            resultPoint ||= new Point();
             var length:Number = getLength();
             resultPoint.setTo(t * _x - s * _y / length, t * _y + s * _x / length);
             return resultPoint;
@@ -82,8 +79,7 @@ package com.rokannon.math.geom
 
         public function project(onVector:Vector2D, resultVector:Vector2D = null):Vector2D
         {
-            if (resultVector == null)
-                resultVector = new Vector2D();
+            resultVector ||= new Vector2D();
             var t:Number = (_x * onVector._x + _y * onVector._y) / (onVector._x * onVector._x + onVector._y * onVector._y);
             resultVector.setTo(t * onVector._x, t * onVector._y);
             return resultVector;
@@ -91,24 +87,21 @@ package com.rokannon.math.geom
 
         public function multiply(t:Number, resultVector:Vector2D = null):Vector2D
         {
-            if (resultVector == null)
-                resultVector = new Vector2D();
+            resultVector ||= new Vector2D();
             resultVector.setTo(t * _x, t * _y);
             return resultVector;
         }
 
         public function inverse(resultVector:Vector2D = null):Vector2D
         {
-            if (resultVector == null)
-                resultVector = new Vector2D();
+            resultVector ||= new Vector2D();
             resultVector.setTo(-_x, -_y);
             return resultVector;
         }
 
         public function rotate(angle:Number, resultVector:Vector2D = null):Vector2D
         {
-            if (resultVector == null)
-                resultVector = new Vector2D();
+            resultVector ||= new Vector2D();
             var cos:Number = Math.cos(angle);
             var sin:Number = Math.sin(angle);
             resultVector.setTo(_x * cos - _y * sin, _x * sin + _y * cos);
@@ -117,8 +110,7 @@ package com.rokannon.math.geom
 
         public function normalize(length:Number, resultVector:Vector2D = null):Vector2D
         {
-            if (resultVector == null)
-                resultVector = new Vector2D();
+            resultVector ||= new Vector2D();
             var t:Number = length / getLength();
             resultVector.setTo(t * _x, t * _y);
             return resultVector;
@@ -126,8 +118,7 @@ package com.rokannon.math.geom
 
         public static function createVector(start:Point, end:Point, resultVector:Vector2D = null):Vector2D
         {
-            if (resultVector == null)
-                resultVector = new Vector2D();
+            resultVector ||= new Vector2D();
             resultVector.setTo(end.x - start.x, end.y - start.y);
             return resultVector;
         }
@@ -148,8 +139,7 @@ package com.rokannon.math.geom
 
         public function closestPointToXY(x:Number, y:Number, resultPoint:Point = null):Point
         {
-            if (resultPoint == null)
-                resultPoint = new Point();
+            resultPoint ||= new Point();
             var squareLength:Number = _x * _x + _y * _y;
             if (squareLength == 0)
                 resultPoint.setTo(0, 0);

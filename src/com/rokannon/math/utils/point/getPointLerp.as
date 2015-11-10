@@ -4,8 +4,7 @@ package com.rokannon.math.utils.point
 
     public function getPointLerp(point1:Point, point2:Point, t:Number, resultPoint:Point = null):Point
     {
-        if (resultPoint == null)
-            resultPoint = new Point();
+        resultPoint ||= new Point();
         resultPoint.setTo(point1.x + t * (point2.x - point1.x), point1.y + t * (point2.y - point1.y));
         return resultPoint;
     }

@@ -294,8 +294,7 @@ package com.rokannon.math.raycast
 
         public function getShapesInBox(box:AABBox, resultShapes:Vector.<IShape> = null):Vector.<IShape>
         {
-            if (resultShapes == null)
-                resultShapes = new Vector.<IShape>();
+            resultShapes ||= new Vector.<IShape>();
             var actionID:uint = ++_actionIDCounter;
             var minIndexX:int = getMax(getFloor(box.xMin / _voxelWidth), _minIndexX);
             var maxIndexX:int = getMin(getFloor(box.xMax / _voxelWidth), _maxIndexX);
@@ -323,8 +322,7 @@ package com.rokannon.math.raycast
 
         public function getShapesUnderXY(x:Number, y:Number, resultShapes:Vector.<IShape> = null):Vector.<IShape>
         {
-            if (resultShapes == null)
-                resultShapes = new <IShape>[];
+            resultShapes ||= new <IShape>[];
             var indexX:int = getFloor(x / _voxelWidth);
             var indexY:int = getFloor(y / _voxelHeight);
             if (_minIndexX <= indexX && indexX <= _maxIndexX && _minIndexY <= indexY && indexY <= _maxIndexY)
@@ -368,8 +366,7 @@ package com.rokannon.math.raycast
                     if (!helperBox.intersectsShape(shape))
                         continue;
                     var voxelIndex:int = getVoxelIndex(indexX, indexY);
-                    if (_voxels[voxelIndex] == null)
-                        _voxels[voxelIndex] = Voxel(objectPool.createObject(Voxel));
+                    _voxels[voxelIndex] ||= Voxel(objectPool.createObject(Voxel));
                     var voxel:Voxel = _voxels[voxelIndex];
                     voxel.index = voxelIndex;
                     voxel.gridObjects.push(gridObject);
