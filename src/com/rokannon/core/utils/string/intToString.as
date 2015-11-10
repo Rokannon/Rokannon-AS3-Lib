@@ -6,7 +6,7 @@ package com.rokannon.core.utils.string
     {
         var result:String = "";
         var numDigits:int = getNumDigits(n);
-        for (var i:int = 0; i < minDigits - numDigits; i++)
+        for (var i:int = 0; i < minDigits - numDigits; ++i)
             result += "0";
         result += n.toString();
         return result;
