@@ -4,11 +4,11 @@ package com.rokannon.logging
 
     public class LogFilter
     {
-        public const nameFilter:Vector.<String> = new Vector.<String>();
+        public const nameFilter:Vector.<String> = new <String>[];
 
         public var levelFilter:uint;
 
-        private const _nameFilter:Vector.<String> = new Vector.<String>();
+        private const _nameFilter:Vector.<String> = new <String>[];
 
         private var _levelFilter:uint;
         private var _logTarget:LogTarget;

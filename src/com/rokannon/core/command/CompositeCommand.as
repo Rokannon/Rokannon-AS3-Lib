@@ -4,7 +4,7 @@ package com.rokannon.core.command
 
     public class CompositeCommand extends CommandBase
     {
-        protected const _commands:Vector.<CommandBase> = new Vector.<CommandBase>();
+        protected const _commands:Vector.<CommandBase> = new <CommandBase>[];
 
         private const _commandByName:Dictionary = new Dictionary();
 

@@ -2,8 +2,8 @@ package com.rokannon.core
 {
     public class Broadcaster
     {
-        private const _callbacks:Vector.<Function> = new Vector.<Function>();
-        private const _queue:Vector.<Function> = new Vector.<Function>();
+        private const _callbacks:Vector.<Function> = new <Function>[];
+        private const _queue:Vector.<Function> = new <Function>[];
 
         private var _target:*;
         private var _numCallbacks:uint;

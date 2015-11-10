@@ -23,9 +23,9 @@ package com.rokannon.math.geom
         private static const helperVector2:Vector2D = new Vector2D();
         private static const helperPoint1:Point = new Point();
         private static const helperPoint2:Point = new Point();
-        private static const helperNumbers:Vector.<Number> = new Vector.<Number>();
+        private static const helperNumbers:Vector.<Number> = new <Number>[];
 
-        public const vertices:Vector.<Number> = new Vector.<Number>();
+        public const vertices:Vector.<Number> = new <Number>[];
 
         private var _numVertices:int;
         private var _bounds:AABBox;

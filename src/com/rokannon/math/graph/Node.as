@@ -7,8 +7,8 @@ package com.rokannon.math.graph
         public var x:Number = 0;
         public var y:Number = 0;
 
-        internal const toNodes:Vector.<Node> = new Vector.<Node>();
-        internal const fromNodes:Vector.<Node> = new Vector.<Node>();
+        internal const toNodes:Vector.<Node> = new <Node>[];
+        internal const fromNodes:Vector.<Node> = new <Node>[];
 
         internal var known:Boolean = false;
         internal var path:Node;

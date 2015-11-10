@@ -12,7 +12,7 @@ package com.rokannon.logging
         private static const classUtilsCache:ClassUtilsCache = ClassUtilsCache.instance;
 
         private const _loggerByName:Dictionary = new Dictionary();
-        private const _logTargets:Vector.<LogTarget> = new Vector.<LogTarget>();
+        private const _logTargets:Vector.<LogTarget> = new <LogTarget>[];
 
         public function Log()
         {

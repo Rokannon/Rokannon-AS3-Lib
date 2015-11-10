@@ -13,7 +13,7 @@ package com.rokannon.core.utils.classUtils
         else
             xml = classUtilsCache.describeType(classDefinition);
 
-        var variables:Vector.<String> = new Vector.<String>();
+        var variables:Vector.<String> = new <String>[];
         for each (var variable:XML in xml.variable)
         {
             if (type == null || type == variable.@type)

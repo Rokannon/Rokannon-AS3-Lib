@@ -16,7 +16,7 @@ package com.rokannon.math.geom
     {
         private static const logger:Logger = Log.instance.getLogger(AABBox);
         private static const helperSegment:Segment = new Segment();
-        private static const helperVertices:Vector.<Number> = new Vector.<Number>();
+        private static const helperVertices:Vector.<Number> = new <Number>[];
         private static const helperPoint:Point = new Point();
 
         private static const INSIDE:int = 0;

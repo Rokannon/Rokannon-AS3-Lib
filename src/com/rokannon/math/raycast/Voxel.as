@@ -4,7 +4,7 @@ package com.rokannon.math.raycast
 
     public class Voxel implements IPoolObject
     {
-        public const gridObjects:Vector.<GridObject> = new Vector.<GridObject>();
+        public const gridObjects:Vector.<GridObject> = new <GridObject>[];
 
         public var index:int;
 

@@ -5,7 +5,7 @@ package com.rokannon.logging
 
     public class Logger
     {
-        private const _callbacks:Vector.<Function> = new Vector.<Function>();
+        private const _callbacks:Vector.<Function> = new <Function>[];
 
         private var _name:String;
 

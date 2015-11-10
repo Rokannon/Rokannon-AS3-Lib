@@ -7,10 +7,10 @@ package com.rokannon.math.graph
 
     public class Graph implements IRenderable
     {
-        private static const helperNodes:Vector.<Node> = new Vector.<Node>();
+        private static const helperNodes:Vector.<Node> = new <Node>[];
         private static const objectPool:ObjectPool = ObjectPool.instance;
 
-        public const nodes:Vector.<Node> = new Vector.<Node>();
+        public const nodes:Vector.<Node> = new <Node>[];
 
         public function Graph()
         {
@@ -91,7 +91,7 @@ package com.rokannon.math.graph
                 }
             }
 
-            resultNodes ||= new Vector.<Node>();
+            resultNodes ||= new <Node>[];
             if (endNode.known)
             {
                 node = endNode;

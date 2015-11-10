@@ -9,7 +9,7 @@ package com.rokannon.logging
 
         internal const eventFilterChanged:Broadcaster = new Broadcaster(this);
 
-        private const _loggers:Vector.<Logger> = new Vector.<Logger>();
+        private const _loggers:Vector.<Logger> = new <Logger>[];
 
         public function LogTarget()
         {

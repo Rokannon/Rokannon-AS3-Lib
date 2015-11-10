@@ -8,7 +8,7 @@ package com.rokannon.core
 
     public class TwoKeysDictionary implements IPoolObject
     {
-        private static const dictionaryPool:Vector.<Dictionary> = new Vector.<Dictionary>();
+        private static const dictionaryPool:Vector.<Dictionary> = new <Dictionary>[];
 
         private const _valueByKey1AndKey2:Dictionary = new Dictionary();
 

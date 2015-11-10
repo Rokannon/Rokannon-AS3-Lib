@@ -26,7 +26,7 @@ package com.rokannon.math.raycast
         private static const helperObject:Object = {};
         private static const objectPool:ObjectPool = ObjectPool.instance;
 
-        private const _voxels:Vector.<Voxel> = new Vector.<Voxel>();
+        private const _voxels:Vector.<Voxel> = new <Voxel>[];
         private const _gridObjectByShape:Dictionary = new Dictionary();
 
         private var _voxelWidth:Number;
@@ -294,7 +294,7 @@ package com.rokannon.math.raycast
 
         public function getShapesInBox(box:AABBox, resultShapes:Vector.<IShape> = null):Vector.<IShape>
         {
-            resultShapes ||= new Vector.<IShape>();
+            resultShapes ||= new <IShape>[];
             var actionID:uint = ++_actionIDCounter;
             var minIndexX:int = getMax(getFloor(box.xMin / _voxelWidth), _minIndexX);
             var maxIndexX:int = getMin(getFloor(box.xMax / _voxelWidth), _maxIndexX);
