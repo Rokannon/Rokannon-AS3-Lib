@@ -292,7 +292,7 @@ package com.rokannon.math.raycast
             return segmentCheckXY(point1.x, point1.y, point2.x, point2.y);
         }
 
-        public function shapesInBox(box:AABBox, resultShapes:Vector.<IShape> = null):Vector.<IShape>
+        public function getShapesInBox(box:AABBox, resultShapes:Vector.<IShape> = null):Vector.<IShape>
         {
             if (resultShapes == null)
                 resultShapes = new Vector.<IShape>();
