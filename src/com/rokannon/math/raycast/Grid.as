@@ -321,6 +321,32 @@ package com.rokannon.math.raycast
             return resultShapes;
         }
 
+        public function getShapesUnderXY(x:Number, y:Number, resultShapes:Vector.<IShape> = null):Vector.<IShape>
+        {
+            if (resultShapes == null)
+                resultShapes = new <IShape>[];
+            var indexX:int = getFloor(x / _voxelWidth);
+            var indexY:int = getFloor(y / _voxelHeight);
+            if (_minIndexX <= indexX && indexX <= _maxIndexX && _minIndexY <= indexY && indexY <= _maxIndexY)
+            {
+                var voxel:Voxel = getVoxel(indexX, indexY);
+                if (voxel != null)
+                {
+                    for each (var gridObject:GridObject in voxel.gridObjects)
+                    {
+                        if (gridObject.shape.containsXY(x, y))
+                            resultShapes.push(gridObject.shape);
+                    }
+                }
+            }
+            return resultShapes;
+        }
+
+        public function getShapesUnderP(point:Point, resultShapes:Vector.<IShape> = null):Vector.<IShape>
+        {
+            return getShapesUnderXY(point.x, point.y, resultShapes);
+        }
+
         public function addShape(shape:IShape):void
         {
             if (_gridObjectByShape[shape] != null)
