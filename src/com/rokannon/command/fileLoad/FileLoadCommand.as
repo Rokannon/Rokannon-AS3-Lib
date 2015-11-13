@@ -1,6 +1,8 @@
 package com.rokannon.command.fileLoad
 {
     import com.rokannon.core.command.CommandBase;
+    import com.rokannon.logging.Log;
+    import com.rokannon.logging.Logger;
 
     import flash.events.Event;
 
@@ -8,6 +10,8 @@ package com.rokannon.command.fileLoad
 
     public class FileLoadCommand extends CommandBase
     {
+        private static const logger:Logger = Log.instance.getLogger(FileLoadCommand);
+
         private var _context:FileLoadContext;
 
         public function FileLoadCommand(context:FileLoadContext)
@@ -27,6 +31,10 @@ package com.rokannon.command.fileLoad
         {
             _context.fileToLoad.removeEventListener(Event.COMPLETE, onLoadComplete);
             _context.fileToLoad.removeEventListener(IOErrorEvent.IO_ERROR, onLoadError);
+            CONFIG::log_error
+            {
+                logger.error("Error loading file: {0}", _context.fileToLoad.nativePath);
+            }
             onFailed();
         }
 

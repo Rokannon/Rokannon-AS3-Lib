@@ -1,6 +1,8 @@
 package com.rokannon.command.bitmapLoad
 {
     import com.rokannon.core.command.CommandBase;
+    import com.rokannon.logging.Log;
+    import com.rokannon.logging.Logger;
 
     import flash.display.Bitmap;
 
@@ -10,6 +12,8 @@ package com.rokannon.command.bitmapLoad
 
     public class BitmapLoadCommand extends CommandBase
     {
+        private static const logger:Logger = Log.instance.getLogger(BitmapLoadCommand);
+
         private const _loader:Loader = new Loader();
 
         private var _context:BitmapLoadContext;
@@ -39,6 +43,10 @@ package com.rokannon.command.bitmapLoad
         {
             _loader.contentLoaderInfo.removeEventListener(Event.COMPLETE, onLoaderComplete);
             _loader.contentLoaderInfo.removeEventListener(IOErrorEvent.IO_ERROR, onLoaderError);
+            CONFIG::log_error
+            {
+                logger.error("Error loading bitmap from byte array.");
+            }
             onFailed();
         }
     }
