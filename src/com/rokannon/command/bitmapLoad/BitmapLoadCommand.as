@@ -5,7 +5,6 @@ package com.rokannon.command.bitmapLoad
     import com.rokannon.logging.Logger;
 
     import flash.display.Bitmap;
-
     import flash.display.Loader;
     import flash.events.Event;
     import flash.events.IOErrorEvent;

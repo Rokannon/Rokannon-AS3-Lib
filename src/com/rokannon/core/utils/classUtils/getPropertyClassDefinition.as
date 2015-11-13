@@ -3,7 +3,6 @@ package com.rokannon.core.utils.classUtils
     import com.rokannon.core.ClassUtilsCache;
 
     import flash.utils.describeType;
-
     import flash.utils.getDefinitionByName;
 
     public function getPropertyClassDefinition(classDefinition:Class, propertyName:String,

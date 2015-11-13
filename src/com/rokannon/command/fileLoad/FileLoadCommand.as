@@ -5,7 +5,6 @@ package com.rokannon.command.fileLoad
     import com.rokannon.logging.Logger;
 
     import flash.events.Event;
-
     import flash.events.IOErrorEvent;
 
     public class FileLoadCommand extends CommandBase

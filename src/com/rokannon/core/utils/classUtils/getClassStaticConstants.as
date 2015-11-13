@@ -5,7 +5,7 @@ package com.rokannon.core.utils.classUtils
     import flash.utils.describeType;
 
     public function getClassStaticConstants(classDefinition:Class, type:String = null,
-                                      classUtilsCache:ClassUtilsCache = null):Vector.<String>
+                                            classUtilsCache:ClassUtilsCache = null):Vector.<String>
     {
         var xml:XML;
         if (classUtilsCache == null)
