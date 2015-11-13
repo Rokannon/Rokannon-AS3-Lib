@@ -1,14 +1,14 @@
-package com.rokannon.command.waitAddedToStage
+package com.rokannon.command.addedToStageWait
 {
     import com.rokannon.core.command.CommandBase;
 
     import flash.events.Event;
 
-    public class WaitAddedToStageCommand extends CommandBase
+    public class AddedToStageWaitCommand extends CommandBase
     {
-        private var _context:WaitAddedToStageContext;
+        private var _context:AddedToStageWaitContext;
 
-        public function WaitAddedToStageCommand(context:WaitAddedToStageContext)
+        public function AddedToStageWaitCommand(context:AddedToStageWaitContext)
         {
             super();
             _context = context;
