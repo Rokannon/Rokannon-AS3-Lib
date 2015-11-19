@@ -2,12 +2,15 @@ package com.rokannon.core.command
 {
     public class ConcurrentCommand extends CompositeCommand
     {
-        private var _numCompleteCommands:uint = 0;
+        private var _currentCommandIndex:uint = 0;
         private var _numFailedCommands:uint = 0;
+        private var _numRunningCommands:uint = 0;
+        private var _maxRunningCommands:uint;
 
-        public function ConcurrentCommand()
+        public function ConcurrentCommand(maxRunningCommands:uint = 0)
         {
             super();
+            _maxRunningCommands = maxRunningCommands;
         }
 
         override protected function onStart():void
@@ -16,12 +19,8 @@ package com.rokannon.core.command
                 onComplete();
             else
             {
-                for each (var command:CommandBase in _commands)
-                {
-                    command.eventComplete.add(onCommandComplete);
-                    command.eventFailed.add(onCommandFailed);
-                    command.execute();
-                }
+                while ((_maxRunningCommands == 0 || _numRunningCommands < _maxRunningCommands) && _currentCommandIndex < _commands.length)
+                    startNext();
             }
         }
 
@@ -29,7 +28,7 @@ package com.rokannon.core.command
         {
             command.eventComplete.remove(onCommandComplete);
             command.eventFailed.remove(onCommandFailed);
-            ++_numCompleteCommands;
+            --_numRunningCommands;
             tryFinishCommand();
         }
 
@@ -37,19 +36,33 @@ package com.rokannon.core.command
         {
             command.eventComplete.remove(onCommandComplete);
             command.eventFailed.remove(onCommandFailed);
+            --_numRunningCommands;
             ++_numFailedCommands;
             tryFinishCommand();
+        }
+
+        private function startNext():void
+        {
+            var command:CommandBase = _commands[_currentCommandIndex];
+            ++_currentCommandIndex;
+            ++_numRunningCommands;
+            command.eventComplete.add(onCommandComplete);
+            command.eventFailed.add(onCommandFailed);
+            command.execute();
         }
 
         [Inline]
         private final function tryFinishCommand():void
         {
-            if (_numCompleteCommands + _numFailedCommands < _commands.length)
-                return;
-            if (_numFailedCommands > 0)
-                onFailed();
-            else
-                onComplete();
+            if (_currentCommandIndex < _commands.length)
+                startNext();
+            else if (_numRunningCommands == 0)
+            {
+                if (_numFailedCommands > 0)
+                    onFailed();
+                else
+                    onComplete();
+            }
         }
     }
 }
