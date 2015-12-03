@@ -99,6 +99,20 @@ package com.rokannon.math.geom
             return resultPoint;
         }
 
+        public function reflectPoint(point:Point, resultPoint:Point = null):Point
+        {
+            resultPoint ||= new Point();
+            var u1:Number = _x1 - _x2;
+            var v1:Number = _y1 - _y2;
+            var u2:Number = point.x - _x2;
+            var v2:Number = point.y - _y2;
+            var p:Number = u1 * u2 + v1 * v2;
+            var q:Number = v1 * u2 - u1 * v2;
+            var r:Number = u1 * u1 + v1 * v1;
+            resultPoint.setTo(_x2 + (u1 * p - v1 * q) / r, _y2 + (v1 * p + u1 * q) / r);
+            return resultPoint;
+        }
+
         public function lineXY(x:Number, y:Number):Number
         {
             return (_x2 - _x1) * (y - _y1) - (_y2 - _y1) * (x - _x1);
