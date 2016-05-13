@@ -5,7 +5,7 @@ package com.rokannon.logging
 
     public class LogTarget
     {
-        public const filter:LogFilter = new LogFilter(this);
+        public const filter:LogFilter = new LogFilter(LogTarget(this));
 
         internal const eventFilterChanged:Broadcaster = new Broadcaster(this);
 
